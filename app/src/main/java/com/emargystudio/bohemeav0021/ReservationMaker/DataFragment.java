@@ -25,19 +25,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.emargystudio.bohemeav0021.Common.CommonReservation;
+import com.emargystudio.bohemeav0021.helperClasses.CommonReservation;
 import com.emargystudio.bohemeav0021.HomeActivity;
 import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.R;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.Calendar;
 
-import static com.emargystudio.bohemeav0021.Common.CommonReservation.hideSoftKeyboard;
+import static com.emargystudio.bohemeav0021.helperClasses.CommonReservation.hideSoftKeyboard;
 
 
 public class DataFragment extends Fragment {

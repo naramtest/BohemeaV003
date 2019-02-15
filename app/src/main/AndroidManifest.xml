@@ -13,7 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ReservationMaker.ReservationActivity"></activity>
+        <activity android:name=".Profile.ProfileActivity"></activity>
+        <activity android:name=".Cart.CartActivity" />
+        <activity android:name=".Cinema.CinemaActivity" />
+        <activity android:name=".Menu.MenuActivity" />
+        <activity android:name=".ReservationMaker.ReservationActivity" />
 
         <meta-data
             android:name="com.parse.SERVER_URL"
@@ -42,7 +46,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.emargystudio.bohemeav0021.Common.CommonReservation;
+import com.emargystudio.bohemeav0021.helperClasses.CommonReservation;
 import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.R;
 

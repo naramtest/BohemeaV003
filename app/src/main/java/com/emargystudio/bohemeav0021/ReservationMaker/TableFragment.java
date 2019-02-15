@@ -17,15 +17,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.emargystudio.bohemeav0021.Common.CommonReservation;
 import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.Model.Table;
-import com.emargystudio.bohemeav0021.Model.User;
 import com.emargystudio.bohemeav0021.R;
 import com.emargystudio.bohemeav0021.ViewHolder.TableAdapter;
 import com.emargystudio.bohemeav0021.helperClasses.URLS;
@@ -36,8 +33,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class TableFragment extends Fragment {

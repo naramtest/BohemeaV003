@@ -1,4 +1,4 @@
-package com.emargystudio.bohemeav0021.Common;
+package com.emargystudio.bohemeav0021.helperClasses;
 
 
 import android.app.Activity;

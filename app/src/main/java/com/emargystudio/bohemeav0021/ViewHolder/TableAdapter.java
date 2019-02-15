@@ -24,7 +24,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.emargystudio.bohemeav0021.Common.CommonReservation;
 import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.Model.User;
 import com.emargystudio.bohemeav0021.R;

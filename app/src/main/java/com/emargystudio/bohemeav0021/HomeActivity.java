@@ -1,9 +1,11 @@
 package com.emargystudio.bohemeav0021;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,9 +21,11 @@ import android.widget.Toast;
 
 
 import com.emargystudio.bohemeav0021.ReservationMaker.ReservationActivity;
+import com.emargystudio.bohemeav0021.helperClasses.BottomNavigationViewHelper;
 import com.emargystudio.bohemeav0021.helperClasses.SharedPreferenceManger;
 
 import com.facebook.login.LoginManager;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
@@ -34,12 +38,14 @@ public class HomeActivity extends AppCompatActivity {
     //views
     Button btnMakeReservation;
 
+    private Context mContext = HomeActivity.this;
+    private static final int ACTIVITY_NUM = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (!SharedPreferenceManger.getInstance(this).isUserLogggedIn()){
-
             Intent intent = new Intent(HomeActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -47,11 +53,8 @@ public class HomeActivity extends AppCompatActivity {
         }else {
             setContentView(R.layout.activity_home);
 
-
             //widget
             btnMakeReservation = findViewById(R.id.btn_make_reservation);
-
-
             //clickListeners
             btnMakeReservation.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -60,6 +63,8 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(reservationIntent);
                 }
             });
+
+            setupBottomNavigationView();
 
         }
     }
@@ -79,6 +84,15 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    private void setupBottomNavigationView(){
+        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext,this,bottomNavigationViewEx);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
+    }
 
 
     @Override
