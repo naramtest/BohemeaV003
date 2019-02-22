@@ -16,7 +16,7 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "ProfileActivity";
 
     private Context mContext = ProfileActivity.this;
-    private static final int ACTIVITY_NUM = 1;
+    private static final int ACTIVITY_NUM = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

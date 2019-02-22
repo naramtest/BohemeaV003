@@ -46,6 +46,15 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.2'
+    implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
+    def lifecycle_version = "1.1.1"
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
+    def room_version = "1.1.1"
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+
 
 
 }
