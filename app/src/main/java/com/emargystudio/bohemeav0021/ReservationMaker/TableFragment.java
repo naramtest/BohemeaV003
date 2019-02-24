@@ -1,6 +1,8 @@
 package com.emargystudio.bohemeav0021.ReservationMaker;
 
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,8 +23,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.emargystudio.bohemeav0021.Common;
+import com.emargystudio.bohemeav0021.Model.FoodOrder;
 import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.Model.Table;
+import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
+import com.emargystudio.bohemeav0021.OrderDatabase.MainViewModel;
 import com.emargystudio.bohemeav0021.R;
 import com.emargystudio.bohemeav0021.ViewHolder.TableAdapter;
 import com.emargystudio.bohemeav0021.helperClasses.URLS;
@@ -32,7 +38,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import static com.emargystudio.bohemeav0021.Common.total;
 
 
 public class TableFragment extends Fragment {
@@ -51,7 +62,9 @@ public class TableFragment extends Fragment {
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private ArrayList<String> mNames = new ArrayList<>();
     private Reservation reservation;
-    ArrayList<Integer> tableArray;
+    private ArrayList<Integer> tableArray;
+    private AppDatabase mDb;
+    private List<FoodOrder> foodList;
 
 
     public TableFragment() {
@@ -77,18 +90,23 @@ public class TableFragment extends Fragment {
         textView = view.findViewById(R.id.textView);
         progressBar = view.findViewById(R.id.progressBar_cyclic);
         tableArray = new ArrayList<>();
+        mDb = AppDatabase.getInstance(getContext());
+        foodList = new ArrayList<>();
 
         //try to get available tables from the query i use in data datafragment
         try {
             reservation = getReservationFromBundle();
+            Log.d(TAG, "onViewCreated: "+reservation);
             reservationQuery();
+            //initImageBitmaps();
         }catch (NullPointerException e){
             Toast.makeText(getContext(), "something went wrong", Toast.LENGTH_SHORT).show();
         }
-
+        loadListFood();
         Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NABILA.TTF");
         textView.setTypeface(face);
         initRecyclerView(view);
+
 
 
     }
@@ -133,7 +151,8 @@ public class TableFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),"response error",Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "onErrorResponse: "+ error.getMessage());
                     }
                 }
 
@@ -198,12 +217,14 @@ public class TableFragment extends Fragment {
     }
 
     private void initRecyclerView(View view){
-        RecyclerView recyclerView = view.findViewById(R.id.recycle_table);
-        tableAdapter = new TableAdapter(getContext(),mNames,mImageUrls,reservation);
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(NUM_COLUMNS, LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
-        recyclerView.setAdapter(tableAdapter);
+
+        Log.d(TAG, "initRecyclerView: "+foodList);
+            RecyclerView recyclerView = view.findViewById(R.id.recycle_table);
+            tableAdapter = new TableAdapter(getContext(),mNames,mImageUrls,reservation,foodList);
+            StaggeredGridLayoutManager staggeredGridLayoutManager =
+                    new StaggeredGridLayoutManager(NUM_COLUMNS, LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(staggeredGridLayoutManager);
+            recyclerView.setAdapter(tableAdapter);
     }
 
     private Reservation getReservationFromBundle(){
@@ -222,6 +243,20 @@ public class TableFragment extends Fragment {
         Log.d(TAG, "onSaveInstanceState: "+outState.toString());
         outState.putStringArrayList("ID",mNames);
         super.onSaveInstanceState(outState);
+    }
+
+
+    private void loadListFood() {
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.getTasks().observe(this, new Observer<List<FoodOrder>>() {
+            @Override
+            public void onChanged(@Nullable List<FoodOrder> foodOrders) {
+                foodList = foodOrders;
+                Common.isOrdered = true;
+                tableAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
 

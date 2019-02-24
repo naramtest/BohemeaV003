@@ -17,6 +17,7 @@ import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
 import com.emargystudio.bohemeav0021.R;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 public class FoodDetailActivity extends AppCompatActivity {
 
@@ -60,25 +61,34 @@ public class FoodDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                int food_id = foodMenu.getId();
-                int discount = foodMenu.getDiscount();
-                int quantity = Integer.parseInt(numberButton.getNumber());
-                int price = foodMenu.getPrice();
-                int res_id = Common.res_id;
-                String food_name = foodMenu.getName();
-
-                final FoodOrder foodOrder = new FoodOrder(res_id,food_id,food_name,quantity,price,discount);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        mDb.orderDao().insertFood(foodOrder);
-
-                        finish();
-                    }
-
-                });
+                addToCart();
             }
+        });
+    }
+
+    private void addToCart() {
+        int food_id = foodMenu.getId();
+        int discount = foodMenu.getDiscount();
+        int quantity = Integer.parseInt(numberButton.getNumber());
+        int price = foodMenu.getPrice();
+        Common.total = (Common.total)+(price*quantity);
+        int res_id = Common.res_id;
+        String food_name = foodMenu.getName();
+
+        final FoodOrder foodOrder = new FoodOrder(res_id,food_id,food_name,quantity,price,discount);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                mDb.orderDao().insertFood(foodOrder);
+                if (!Common.isOrdered ){
+                    Common.isOrdered = true;
+
+                }
+
+                finish();
+            }
+
         });
     }
 

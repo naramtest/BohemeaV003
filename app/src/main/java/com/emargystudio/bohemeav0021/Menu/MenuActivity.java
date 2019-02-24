@@ -44,17 +44,13 @@ public class MenuActivity extends AppCompatActivity {
 
     private static final String TAG = "MenuActivity";
     private Context mContext = MenuActivity.this;
-    private Fragment fragment;
-
 
 
     private static final int ACTIVITY_NUM = 1;
     private int currentCategory = 0;
-
     //widget
     CardView categoryCardView ;
     TextView categorySelected;
-    RecyclerView foodList;
 
     //var
     //category arrays

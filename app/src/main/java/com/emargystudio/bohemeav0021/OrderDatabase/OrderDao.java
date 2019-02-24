@@ -18,6 +18,9 @@ public interface OrderDao {
     @Query("SELECT * FROM food")
     LiveData<List<FoodOrder>> loadAllFoods();
 
+    @Query("SELECT * FROM food")
+    List<FoodOrder> loadAllFoodsAdapter();
+
     @Insert
     void insertFood(FoodOrder foodOrder);
 

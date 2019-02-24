@@ -24,21 +24,30 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.emargystudio.bohemeav0021.Common;
+import com.emargystudio.bohemeav0021.Model.FoodOrder;
 import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.Model.User;
+import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
+import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
 import com.emargystudio.bohemeav0021.R;
 import com.emargystudio.bohemeav0021.ReservationMaker.ReservationActivity;
 import com.emargystudio.bohemeav0021.ReservationMaker.ReservationSummaryFragment;
 import com.emargystudio.bohemeav0021.helperClasses.SharedPreferenceManger;
 import com.emargystudio.bohemeav0021.helperClasses.URLS;
 import com.emargystudio.bohemeav0021.helperClasses.VolleyHandler;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static com.emargystudio.bohemeav0021.Common.res_id;
+import static com.emargystudio.bohemeav0021.Common.total;
 
 public class TableAdapter extends RecyclerView.Adapter<TableViewHolder> {
 
@@ -49,15 +58,19 @@ public class TableAdapter extends RecyclerView.Adapter<TableViewHolder> {
     private Context context;
     private Reservation reservation;
     private User user;
+    private AppDatabase mDb;
+    List<FoodOrder> foodList;
 
 
 
-    public TableAdapter(Context context ,ArrayList<String> mNames, ArrayList<String> mImages , Reservation reservation) {
+    public TableAdapter(Context context ,ArrayList<String> mNames, ArrayList<String> mImages , Reservation reservation,List<FoodOrder> foodList) {
         this.mNames = mNames;
         this.mImages = mImages;
         this.context = context;
         this.reservation= reservation;
         user = SharedPreferenceManger.getInstance(context).getUserData();
+        mDb = AppDatabase.getInstance(context);
+        queryFoodList();
     }
 
     @NonNull
@@ -147,6 +160,16 @@ public class TableAdapter extends RecyclerView.Adapter<TableViewHolder> {
                             if (!jsonObject.getBoolean("error")){
 
 
+                                JSONObject jsonObjectUser =  jsonObject.getJSONObject("reservation");
+                                Common.res_id = jsonObjectUser.getInt("res_id");
+                                Log.d(TAG, "onResponse: "+Common.res_id);
+
+
+                                if (Common.isOrdered){
+
+                                    sendOrder();
+                                }
+
                                 //go to summary fragment and add reservation as a bundle to setup TextView int summaryFragment
                                 Fragment fragment = new ReservationSummaryFragment();
                                 Bundle args = new Bundle();
@@ -195,9 +218,58 @@ public class TableAdapter extends RecyclerView.Adapter<TableViewHolder> {
 
         VolleyHandler.getInstance(context).addRequetToQueue(stringRequest);
 
+    }
 
 
+    private void sendOrder() {
+        Gson gson=new Gson();
+        final String newDataArray=gson.toJson(foodList);
+        Log.d(TAG, "sendOrder: "+foodList);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URLS.test,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Common.clearCommon();
+                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDb.orderDao().deleteAllFood();
+                            }
+                        });
 
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        error.getMessage();
+                    }
+                }
+        ){
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> param=new HashMap<>();
+                param.put("array",newDataArray);
+                param.put("total", String.valueOf(total));
+                param.put("res_id",String.valueOf(res_id));// array is key which we will use on server side
+
+                return param;
+            }
+        };//end of string Request
+
+        VolleyHandler.getInstance(context).addRequetToQueue(stringRequest);
 
     }
+
+    private void queryFoodList(){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                foodList = mDb.orderDao().loadAllFoodsAdapter();
+            }
+        });
+    }
+
 }

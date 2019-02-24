@@ -13,11 +13,11 @@
     <string name="starts_at">Starts at :</string>
     <string name="choose_a_date">Date</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="reservation_bundle">reservation</string>
     <string name="internet_off">Something want wrong please check your internet connection and try again later</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
