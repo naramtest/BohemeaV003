@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
+import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
 import com.emargystudio.bohemeav0021.ReservationMaker.ReservationActivity;
 import com.emargystudio.bohemeav0021.helperClasses.BottomNavigationViewHelper;
 import com.emargystudio.bohemeav0021.helperClasses.SharedPreferenceManger;
@@ -40,10 +42,13 @@ public class HomeActivity extends AppCompatActivity {
 
     private Context mContext = HomeActivity.this;
     private static final int ACTIVITY_NUM = 0;
+    AppDatabase mdb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mdb = AppDatabase.getInstance(this);
 
         if (!SharedPreferenceManger.getInstance(this).isUserLogggedIn()){
             Intent intent = new Intent(HomeActivity.this, MainActivity.class);
@@ -52,6 +57,14 @@ public class HomeActivity extends AppCompatActivity {
             finish();
         }else {
             setContentView(R.layout.activity_home);
+            if (!Common.isOrdered&&Common.total==0){
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mdb.orderDao().deleteAllFood();
+                    }
+                });
+            }
 
             //widget
             btnMakeReservation = findViewById(R.id.btn_make_reservation);

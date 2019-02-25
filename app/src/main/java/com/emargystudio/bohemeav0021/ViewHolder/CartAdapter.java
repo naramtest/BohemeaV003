@@ -3,12 +3,15 @@ package com.emargystudio.bohemeav0021.ViewHolder;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.emargystudio.bohemeav0021.InterFace.ItemClickListener;
@@ -45,6 +48,12 @@ public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder> {
         int price = listData.get(i).getPrice() * listData.get(i).getQuantity();
         holder.txt_price.setText(fmt.format(price));
         holder.txt_cart_name.setText(listData.get(i).getFood_name());
+        holder.txt_cart_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Naram", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
@@ -70,33 +79,22 @@ public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void removeItem(int position) {
+        listData.remove(position);
+        // notify the item removed by position
+        // to perform recycler view delete animations
+        // NOTE: don't call notifyDataSetChanged()
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(FoodOrder item, int position) {
+        listData.add(position, item);
+        // notify item added by position
+        notifyItemInserted(position);
+    }
+
 
 }
 
 
-
-    class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
-        public TextView txt_cart_name,txt_price;
-        public ImageView img_cart_count;
-
-        private ItemClickListener itemClickListener;
-
-        public void setTxt_cart_name(TextView txt_cart_name) {
-            this.txt_cart_name = txt_cart_name;
-        }
-
-        public CartViewHolder(@NonNull View itemView) {
-            super(itemView);
-            txt_cart_name = itemView.findViewById(R.id.cart_item_name);
-            txt_price = itemView.findViewById(R.id.cart_item_price);
-            img_cart_count = itemView.findViewById(R.id.cart_item_count);
-
-        }
-
-        @Override
-        public void onClick(View v) {
-
-        }
-    }
 

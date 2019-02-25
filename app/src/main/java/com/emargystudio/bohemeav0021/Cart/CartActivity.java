@@ -4,11 +4,18 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +37,9 @@ import com.emargystudio.bohemeav0021.OrderDatabase.MainViewModel;
 import com.emargystudio.bohemeav0021.R;
 import com.emargystudio.bohemeav0021.ReservationMaker.ReservationActivity;
 import com.emargystudio.bohemeav0021.ViewHolder.CartAdapter;
+import com.emargystudio.bohemeav0021.ViewHolder.CartViewHolder;
 import com.emargystudio.bohemeav0021.helperClasses.BottomNavigationViewHelper;
+import com.emargystudio.bohemeav0021.helperClasses.RecyclerItemTouchHelper;
 import com.emargystudio.bohemeav0021.helperClasses.URLS;
 import com.emargystudio.bohemeav0021.helperClasses.VolleyHandler;
 import com.google.gson.Gson;
@@ -46,7 +55,7 @@ import java.util.Map;
 import static com.emargystudio.bohemeav0021.Common.res_id;
 import static com.emargystudio.bohemeav0021.Common.total;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     private static final String TAG = "CartActivity";
     private Context mContext = CartActivity.this;
@@ -63,6 +72,9 @@ public class CartActivity extends AppCompatActivity {
     private AppDatabase mDb;
     Locale locale;
     NumberFormat fmt;
+    int total1;
+    private ConstraintLayout coordinatorLayout;
+    boolean isUndo;
 
 
     @Override
@@ -89,6 +101,30 @@ public class CartActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+//            @Override
+//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
+//
+//                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        int position = viewHolder.getAdapterPosition();
+//                        List<FoodOrder> foodItem = cartAdapter.getTasks();
+//                        mDb.orderDao().deleteFood(foodItem.get(position));
+//                        Common.total = Common.total - (foodItem.get(position).getPrice()*foodItem.get(position).getQuantity());
+//                    }
+//                });
+//            }
+//        }).attachToRecyclerView(recyclerView);
+
+
 
 
 
@@ -151,6 +187,9 @@ public class CartActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         cartAdapter = new CartAdapter(this);
         recyclerView.setAdapter(cartAdapter);
+        coordinatorLayout = findViewById(R.id.coordinator_layout);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
         if (Common.res_id == 0){
             btnPlace.setText("Make a Reservation First");
@@ -174,15 +213,63 @@ public class CartActivity extends AppCompatActivity {
         viewModel.getTasks().observe(this, new Observer<List<FoodOrder>>() {
             @Override
             public void onChanged(@Nullable List<FoodOrder> foodOrders) {
+                total1=0;
                 cartAdapter.setTasks(foodOrders);
                 foodList = foodOrders;
                 locale = new Locale("en","US");
                 fmt = NumberFormat.getCurrencyInstance(locale);
-                txtTotalPrice.setText(fmt.format(total));
+                for (int i =0 ; i< foodOrders.size();i++ ){
+                    total1 += foodOrders.get(i).getPrice()*foodOrders.get(i).getQuantity();
+                }
+                txtTotalPrice.setText(fmt.format(total1));
                 Common.isOrdered = true;
             }
         });
 
     }
 
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+
+        if (viewHolder instanceof CartViewHolder) {
+            // get the removed item name to display it in snack bar
+            String name = foodList.get(viewHolder.getAdapterPosition()).getFood_name();
+
+            // backup of removed item for undo purpose
+            final FoodOrder deletedItem = foodList.get(viewHolder.getAdapterPosition());
+            final int deletedIndex = viewHolder.getAdapterPosition();
+
+            // remove the item from recycler view
+            cartAdapter.removeItem(viewHolder.getAdapterPosition());
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mDb.orderDao().deleteFood(deletedItem);
+                }
+            });
+
+
+
+            // showing snack bar with Undo option
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, name + " removed from cart!", Snackbar.LENGTH_LONG);
+            snackbar.setAction("UNDO", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    // undo is selected, restore the deleted item
+                    cartAdapter.restoreItem(deletedItem, deletedIndex);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDb.orderDao().insertFood(deletedItem);
+                        }
+                    });
+                }
+            });
+            snackbar.setActionTextColor(Color.YELLOW);
+            snackbar.show();
+
+        }
+    }
 }

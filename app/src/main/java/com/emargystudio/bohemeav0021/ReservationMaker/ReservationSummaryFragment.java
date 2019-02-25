@@ -38,7 +38,7 @@ public class ReservationSummaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this datafragment
+        // Inflate the layout for this dataFragment
         return inflater.inflate(R.layout.fragment_reservation_summary, container, false);
     }
 
@@ -54,9 +54,6 @@ public class ReservationSummaryFragment extends Fragment {
          preOrderBtn = view.findViewById(R.id.preOrderBtn);
          progressBar = view.findViewById(R.id.progressBar_cyclic);
          homeBtn = view.findViewById(R.id.home);
-
-
-
 
              try {
                  reservation = getReservationFromBundle();

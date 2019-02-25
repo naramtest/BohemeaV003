@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,8 @@ public class MenuActivity extends AppCompatActivity {
     //widget
     CardView categoryCardView ;
     TextView categorySelected;
+    ProgressBar menuPb;
+
 
     //var
     //category arrays
@@ -69,6 +72,8 @@ public class MenuActivity extends AppCompatActivity {
 
         categoryCardView = findViewById(R.id.categoryCardView);
         categorySelected = findViewById(R.id.categorySelected);
+        menuPb = findViewById(R.id.menuPb);
+
 
         categoryCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,12 +122,15 @@ public class MenuActivity extends AppCompatActivity {
                                         foodQuery(foodCategories.get(currentCategory).getId());
                                         categorySelected.setText(foodCategories.get(currentCategory).getName());
                                     }
+
+                                    menuPb.setVisibility(View.GONE);
+
                                 }
 
 
 
                             }else{
-
+                                menuPb.setVisibility(View.GONE);
                                 Toast.makeText(MenuActivity.this,getString(R.string.internet_off),Toast.LENGTH_LONG).show();
                             }
 
@@ -189,9 +197,10 @@ public class MenuActivity extends AppCompatActivity {
                                             jfood.getInt("price"),
                                             jfood.getInt("discount")));
                                 }
+                                menuPb.setVisibility(View.GONE);
                                 foodMenuAdapter.notifyDataSetChanged();
                             }else{
-
+                                menuPb.setVisibility(View.GONE);
                                 Toast.makeText(MenuActivity.this,getString(R.string.internet_off),Toast.LENGTH_LONG).show();
                             }
 
