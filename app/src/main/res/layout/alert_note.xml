@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
+        android:paddingTop="8dp"
+        android:layout_margin="8dp"
+        android:elevation="4dp"
+
+        app:boxBackgroundColor="@color/white"
+        android:focusable="false">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/addNoteEdt"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:inputType="textMultiLine"
+            android:hint="You Can Enter an Additional Note Here "
+            android:gravity="top|start"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+</FrameLayout>

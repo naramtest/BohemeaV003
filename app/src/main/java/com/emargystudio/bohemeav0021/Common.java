@@ -5,7 +5,7 @@ import android.content.Context;
 
 public class Common {
 
-    public static int res_id = 0;
+    public static int res_id = 2;
     public static int total = 0;
     public static boolean isOrdered = false;
     public  Context context;

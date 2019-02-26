@@ -17,6 +17,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.emargystudio.bohemeav0021.InterFace.ItemClickListener;
 import com.emargystudio.bohemeav0021.Model.FoodOrder;
 import com.emargystudio.bohemeav0021.R;
+import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -41,13 +42,19 @@ public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int i) {
-        TextDrawable drawable = TextDrawable.builder().buildRound("" + listData.get(i).getQuantity(), Color.BLUE);
-        holder.img_cart_count.setImageDrawable(drawable);
+
+        //$ sign
         Locale locale = new Locale("en", "US");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
         int price = listData.get(i).getPrice() * listData.get(i).getQuantity();
         holder.txt_price.setText(fmt.format(price));
+
+
         holder.txt_cart_name.setText(listData.get(i).getFood_name());
+        holder.txt_quantity.setText(String.valueOf(listData.get(i).getQuantity()));
+        Picasso.get().load(listData.get(i).getFood_image()).into(holder.foodImage);
+
+
         holder.txt_cart_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,10 +77,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder> {
         return listData;
     }
 
-    /**
-     * When data changes, this method updates the list of taskEntries
-     * and notifies the adapter to use the new values on it
-     */
     public void setTasks(List<FoodOrder> taskEntries) {
         listData = taskEntries;
         notifyDataSetChanged();

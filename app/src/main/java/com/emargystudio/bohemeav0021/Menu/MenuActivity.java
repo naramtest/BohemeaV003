@@ -123,14 +123,11 @@ public class MenuActivity extends AppCompatActivity {
                                         categorySelected.setText(foodCategories.get(currentCategory).getName());
                                     }
 
-                                    menuPb.setVisibility(View.GONE);
-
                                 }
 
 
 
                             }else{
-                                menuPb.setVisibility(View.GONE);
                                 Toast.makeText(MenuActivity.this,getString(R.string.internet_off),Toast.LENGTH_LONG).show();
                             }
 
@@ -163,6 +160,7 @@ public class MenuActivity extends AppCompatActivity {
                 currentCategory = position;
                 Log.d(TAG, "onClick: "+currentCategory);
                 categorySelected.setText(foodCategories.get(currentCategory).getName());
+                foodQuery(foodCategories.get(currentCategory).getId());
                 dialog.dismiss();
             }
         });
@@ -171,6 +169,11 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void foodQuery(int category_id){
+
+        menuPb.setVisibility(View.VISIBLE);
+        if (foodMenus!=null){
+            foodMenus.clear();
+        }
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URLS.food_menu_query+category_id,
                 new Response.Listener<String>() {

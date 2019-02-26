@@ -103,32 +103,6 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
         });
 
 
-//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
-//            @Override
-//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
-//
-//                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        int position = viewHolder.getAdapterPosition();
-//                        List<FoodOrder> foodItem = cartAdapter.getTasks();
-//                        mDb.orderDao().deleteFood(foodItem.get(position));
-//                        Common.total = Common.total - (foodItem.get(position).getPrice()*foodItem.get(position).getQuantity());
-//                    }
-//                });
-//            }
-//        }).attachToRecyclerView(recyclerView);
-
-
-
-
-
-
 
     }
 

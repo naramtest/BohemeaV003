@@ -14,9 +14,11 @@ public class FoodOrder {
     private int quantity;
     private int price;
     private int discount;
+    private String food_image;
+    private String note;
 
 
-    public FoodOrder(int id, int res_id, int food_id, String food_name, int quantity, int price, int discount) {
+    public FoodOrder(int id, int res_id, int food_id, String food_name, int quantity, int price, int discount, String food_image, String note) {
         this.id = id;
         this.res_id = res_id;
         this.food_id = food_id;
@@ -24,17 +26,40 @@ public class FoodOrder {
         this.quantity = quantity;
         this.price = price;
         this.discount = discount;
+        this.food_image = food_image;
+        this.note = note;
     }
 
     @Ignore
-    public FoodOrder(int res_id, int food_id, String food_name, int quantity, int price, int discount) {
+    public FoodOrder(int res_id, int food_id, String food_name, int quantity, int price, int discount, String food_image, String note) {
         this.res_id = res_id;
         this.food_id = food_id;
         this.food_name = food_name;
         this.quantity = quantity;
         this.price = price;
         this.discount = discount;
+        this.food_image = food_image;
+        this.note = note;
     }
+
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getFood_image() {
+        return food_image;
+    }
+
+    public void setFood_image(String food_image) {
+        this.food_image = food_image;
+    }
+
+
 
     public String getFood_name() {
         return food_name;
