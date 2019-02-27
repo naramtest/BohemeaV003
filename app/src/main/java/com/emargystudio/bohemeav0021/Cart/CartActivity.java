@@ -3,6 +3,7 @@ package com.emargystudio.bohemeav0021.Cart;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -11,16 +12,21 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -29,6 +35,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.emargystudio.bohemeav0021.Common;
+import com.emargystudio.bohemeav0021.HomeActivity;
+import com.emargystudio.bohemeav0021.Menu.MenuActivity;
 import com.emargystudio.bohemeav0021.Model.FoodOrder;
 import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
@@ -65,16 +73,24 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     TextView txtTotalPrice;
-    Button btnPlace;
+    Button btnPlace , btnBackToMenu;
+    private ConstraintLayout coordinatorLayout;
+    LinearLayout fullView ;
+    RelativeLayout emptyView;
 
+
+
+    //recycler view var
     List<FoodOrder> foodList;
     CartAdapter cartAdapter;
+
+
     private AppDatabase mDb;
     Locale locale;
     NumberFormat fmt;
     int total1;
-    private ConstraintLayout coordinatorLayout;
-    boolean isUndo;
+
+
 
 
     @Override
@@ -102,6 +118,15 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
             }
         });
 
+        btnBackToMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CartActivity.this, MenuActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
 
     }
@@ -122,6 +147,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
                                     }
                                 });
 
+                                alertDone();
                             }
                         },
                         new Response.ErrorListener() {
@@ -162,6 +188,14 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
         cartAdapter = new CartAdapter(this);
         recyclerView.setAdapter(cartAdapter);
         coordinatorLayout = findViewById(R.id.coordinator_layout);
+        fullView = findViewById(R.id.full_view);
+        emptyView = findViewById(R.id.emptyView);
+        btnBackToMenu = findViewById(R.id.back_to_menu_btn);
+
+        checkEmpty();
+
+
+
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
@@ -197,6 +231,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
                 }
                 txtTotalPrice.setText(fmt.format(total1));
                 Common.isOrdered = true;
+                checkEmpty();
             }
         });
 
@@ -246,4 +281,40 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
 
         }
     }
+
+
+    public void checkEmpty(){
+        if (foodList !=null) {
+            if (foodList.isEmpty()) {
+                Common.isOrdered= false;
+                emptyView.setVisibility(View.VISIBLE);
+                fullView.setVisibility(View.GONE);
+
+            } else {
+                emptyView.setVisibility(View.GONE);
+                fullView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+
+    public void alertDone(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(CartActivity.this);
+        LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View alertLayout = li.inflate(R.layout.alert_done,null);
+        alert.setView(alertLayout);
+        alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(CartActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        AlertDialog dialog = alert.create();
+        dialog.show();
+
+    }
+
+
 }

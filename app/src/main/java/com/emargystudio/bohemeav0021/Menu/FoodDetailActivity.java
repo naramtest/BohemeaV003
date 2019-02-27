@@ -34,7 +34,7 @@ public class FoodDetailActivity extends AppCompatActivity {
     FoodMenu foodMenu;
     // Member variable for the Database
     private AppDatabase mDb;
-    private String note = "";
+    private String note = " ";
 
 
     //widget

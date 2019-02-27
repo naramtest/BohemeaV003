@@ -1,6 +1,7 @@
 package com.emargystudio.bohemeav0021.Menu;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,6 +24,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.emargystudio.bohemeav0021.Cart.CartActivity;
+import com.emargystudio.bohemeav0021.Common;
+import com.emargystudio.bohemeav0021.HomeActivity;
 import com.emargystudio.bohemeav0021.InterFace.ItemClickListener;
 import com.emargystudio.bohemeav0021.MainActivity;
 import com.emargystudio.bohemeav0021.Model.FoodCategory;
@@ -236,5 +240,34 @@ public class MenuActivity extends AppCompatActivity {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(foodMenuAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (Common.isOrdered){
+            AlertDialog.Builder alert = new AlertDialog.Builder(MenuActivity.this);
+            alert.setTitle("Sending Order");
+            alert.setMessage("To send your order please go to Your Cart");
+            alert.setPositiveButton("Cart", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(MenuActivity.this,CartActivity.class);
+                    startActivity(intent);
+                }
+            });
+            alert.setNegativeButton("later", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(MenuActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            AlertDialog dialog = alert.create();
+            dialog.show();
+        }else {
+            super.onBackPressed();
+        }
+
     }
 }

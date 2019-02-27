@@ -1,11 +1,10 @@
 package com.emargystudio.bohemeav0021.ViewHolder;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -25,14 +25,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.emargystudio.bohemeav0021.Common;
+import com.emargystudio.bohemeav0021.HomeActivity;
+import com.emargystudio.bohemeav0021.Menu.MenuActivity;
 import com.emargystudio.bohemeav0021.Model.FoodOrder;
 import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.Model.User;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
 import com.emargystudio.bohemeav0021.R;
-import com.emargystudio.bohemeav0021.ReservationMaker.ReservationActivity;
-import com.emargystudio.bohemeav0021.ReservationMaker.ReservationSummaryFragment;
 import com.emargystudio.bohemeav0021.helperClasses.SharedPreferenceManger;
 import com.emargystudio.bohemeav0021.helperClasses.URLS;
 import com.emargystudio.bohemeav0021.helperClasses.VolleyHandler;
@@ -149,7 +149,6 @@ public class TableAdapter extends RecyclerView.Adapter<TableViewHolder> {
     }
 
     private void sendReservation(final AlertDialog dialog,final int user_id, final Reservation reservation,final ProgressBar progressBar){
-
         progressBar.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLS.send_reservation,
                 new Response.Listener<String>() {
@@ -166,21 +165,12 @@ public class TableAdapter extends RecyclerView.Adapter<TableViewHolder> {
 
 
                                 if (Common.isOrdered){
-
                                     sendOrder();
                                 }
-
-                                //go to summary fragment and add reservation as a bundle to setup TextView int summaryFragment
-                                Fragment fragment = new ReservationSummaryFragment();
-                                Bundle args = new Bundle();
-                                args.putParcelable(context.getString(R.string.reservation_bundle), reservation);
-                                fragment.setArguments(args);
-                                FragmentTransaction ft = ((ReservationActivity)context).getSupportFragmentManager().beginTransaction();
-                                ft.replace(R.id.your_placeholder, fragment,"Summary");
-                                ft.commit();
                                 progressBar.setVisibility(View.GONE);
                                 dialog.dismiss();
-                                Toast.makeText(context, "Done...!!!", Toast.LENGTH_SHORT).show();
+                                alertDone();
+
 
 
                             }else {
@@ -230,6 +220,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableViewHolder> {
                     @Override
                     public void onResponse(String response) {
                         Common.clearCommon();
+                        Common.isSended = true;
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
                             public void run() {
@@ -270,6 +261,35 @@ public class TableAdapter extends RecyclerView.Adapter<TableViewHolder> {
                 foodList = mDb.orderDao().loadAllFoodsAdapter();
             }
         });
+    }
+
+
+    public void alertDone(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View alertLayout = li.inflate(R.layout.alert_reser_done,null);
+        LinearLayout menu = alertLayout.findViewById(R.id.menu_container);
+        alert.setView(alertLayout);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MenuActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+        alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Intent intent = new Intent(context, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+        AlertDialog dialog = alert.create();
+        dialog.show();
+
     }
 
 }
