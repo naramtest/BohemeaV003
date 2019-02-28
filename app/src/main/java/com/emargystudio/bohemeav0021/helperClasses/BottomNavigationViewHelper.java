@@ -29,6 +29,7 @@ public class BottomNavigationViewHelper {
         bottomNavigationViewEx.setItemHorizontalTranslationEnabled(false);
         bottomNavigationViewEx.setTextVisibility(false);
 
+
     }
 
     public static void enableNavigation(final Context context, final Activity callingActivity, BottomNavigationViewEx view){
