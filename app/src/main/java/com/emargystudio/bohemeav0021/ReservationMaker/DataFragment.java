@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -48,6 +49,7 @@ public class DataFragment extends Fragment {
     FloatingActionButton nextFAB;
     TextInputLayout dataLayout,hourLayout,chairLayout;
     ConstraintLayout constraintLayoutl;
+    Toolbar toolbar;
 
 
     //var
@@ -74,16 +76,7 @@ public class DataFragment extends Fragment {
 
 
         //widget
-        backBtn = view.findViewById(R.id.backBtn);
-        edtDate = view.findViewById(R.id.edtDate);
-        edtHour = view.findViewById(R.id.edtHour);
-        edtChairs = view.findViewById(R.id.edtChairs);
-        txtData = view.findViewById(R.id.textView);
-        nextFAB = view.findViewById(R.id.nextFAB);
-        dataLayout = view.findViewById(R.id.dateLayout);
-        hourLayout = view.findViewById(R.id.hourLayout);
-        chairLayout = view.findViewById(R.id.chairLayout);
-        constraintLayoutl = view.findViewById(R.id.constraint1);
+        initView(view);
 
         //var
         Calendar calendar = Calendar.getInstance();
@@ -93,10 +86,6 @@ public class DataFragment extends Fragment {
         final int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         final int currentMinute = calendar.get(Calendar.MINUTE);
         tableFragment = new TableFragment();
-
-        Log.d(TAG, "year: "+chosenYear);
-
-
 
         //change fonts
         Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NABILA.TTF");
@@ -108,7 +97,7 @@ public class DataFragment extends Fragment {
 
 
         // listener
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), HomeActivity.class);
@@ -174,6 +163,19 @@ public class DataFragment extends Fragment {
 
     }
 
+    private void initView(@NonNull View view) {
+        edtDate = view.findViewById(R.id.edtDate);
+        edtHour = view.findViewById(R.id.edtHour);
+        edtChairs = view.findViewById(R.id.edtChairs);
+        txtData = view.findViewById(R.id.textView);
+        nextFAB = view.findViewById(R.id.nextFAB);
+        dataLayout = view.findViewById(R.id.dateLayout);
+        hourLayout = view.findViewById(R.id.hourLayout);
+        chairLayout = view.findViewById(R.id.chairLayout);
+        constraintLayoutl = view.findViewById(R.id.constraint1);
+        toolbar = view.findViewById(R.id.tool_bar);
+    }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
@@ -181,7 +183,6 @@ public class DataFragment extends Fragment {
         Bundle args = new Bundle();
         args.putParcelable(getString(R.string.reservation_bundle), reservation);
         outState.putBundle("args",args);
-        Log.d(TAG, "onSaveInstanceState: "+outState.toString());
         super.onSaveInstanceState(outState);
     }
 
@@ -289,7 +290,7 @@ public class DataFragment extends Fragment {
         }
     }
 
-    //hide soft keyBoard
+//hide soft keyBoard
 //    public void setupUI(View view) {
 //
 //        // Set up touch listener for non-text box views to hide keyboard.

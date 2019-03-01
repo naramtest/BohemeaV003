@@ -10,5 +10,6 @@ public class URLS {
     public static final String food_category_query = "https://safitatestapp.000webhostapp.com/food_category_qurey.php";
     public static final String food_menu_query = "https://safitatestapp.000webhostapp.com/food_menu_query.php?category_id=";
     public static final String test = "https://safitatestapp.000webhostapp.com/server_side.php";
+    public static final String reservation_query_id = "https://safitatestapp.000webhostapp.com/reservation_query_id.php?user_id=";
 
 }
