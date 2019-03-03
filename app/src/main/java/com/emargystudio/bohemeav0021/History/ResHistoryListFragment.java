@@ -1,10 +1,16 @@
-package com.emargystudio.bohemeav0021.Profile;
+package com.emargystudio.bohemeav0021.History;
 
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,27 +30,38 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
-public class HistoryActivity extends AppCompatActivity {
-    private static final String TAG = "HistoryActivity";
+
+public class ResHistoryListFragment extends Fragment {
+
+    private static final String TAG = "ResHistoryListFragment";
+
     User user;
     ArrayList<Reservation> reservations = new ArrayList<>();
     SharedPreferenceManger sharedPreferenceManger;
     ResHistoryAdapter resHistoryAdapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
-
-        sharedPreferenceManger = SharedPreferenceManger.getInstance(HistoryActivity.this);
-        user = sharedPreferenceManger.getUserData();
-        reservationQuery();
-        initRecyclerView();
+    public ResHistoryListFragment() {
+        // Required empty public constructor
     }
 
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_res_history_list, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        sharedPreferenceManger = SharedPreferenceManger.getInstance(getContext());
+        user = sharedPreferenceManger.getUserData();
+        reservationQuery();
+        initRecyclerView(view);
+    }
 
     public void reservationQuery(){
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URLS.reservation_query_id+user.getUserId(),
@@ -70,7 +87,9 @@ public class HistoryActivity extends AppCompatActivity {
                                             jsonObjectSingleRes.getInt("day"),
                                             jsonObjectSingleRes.getDouble("hours"),
                                             jsonObjectSingleRes.getDouble("end_hour"),
-                                            jsonObjectSingleRes.getInt("chairNumber")));
+                                            jsonObjectSingleRes.getInt("chairNumber"),
+                                            jsonObjectSingleRes.getInt("status"),
+                                            jsonObjectSingleRes.getInt("total")));
 
 
                                 }
@@ -79,7 +98,7 @@ public class HistoryActivity extends AppCompatActivity {
 
 
                             }else{
-                                Toast.makeText(HistoryActivity.this, "Please check your internet connection and try again later .... ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Please check your internet connection and try again later .... ", Toast.LENGTH_SHORT).show();
 
                             }
                         }catch (JSONException e){
@@ -90,7 +109,7 @@ public class HistoryActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(HistoryActivity.this,"response error", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),"response error", Toast.LENGTH_LONG).show();
                         Log.d(TAG, "onErrorResponse: "+ error.getMessage());
                     }
                 }
@@ -98,16 +117,17 @@ public class HistoryActivity extends AppCompatActivity {
         );
 
 
-        VolleyHandler.getInstance(HistoryActivity.this).addRequetToQueue(stringRequest);
+        VolleyHandler.getInstance(getContext()).addRequetToQueue(stringRequest);
     }
 
 
-    private void initRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.res_history);
+    private void initRecyclerView(View view) {
+        RecyclerView recyclerView = view.findViewById(R.id.res_history);
 
-        resHistoryAdapter = new ResHistoryAdapter(HistoryActivity.this, reservations);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        resHistoryAdapter = new ResHistoryAdapter(getContext(), reservations);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(resHistoryAdapter);
 
     }
+
 }

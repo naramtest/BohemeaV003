@@ -10,6 +10,7 @@ public class Common {
     public static boolean isOrdered = false;
     public static boolean isSended = false;
     public  Context context;
+    public static boolean isCahnged = false;
 
     public static void clearCommon() {
         res_id = 0;

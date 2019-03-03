@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.emargystudio.bohemeav0021.History.HistoryActivity;
 import com.emargystudio.bohemeav0021.Model.User;
 import com.emargystudio.bohemeav0021.R;
 import com.emargystudio.bohemeav0021.helperClasses.SharedPreferenceManger;
@@ -55,7 +56,7 @@ public class ProfileFragment extends Fragment {
         historyDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(),HistoryActivity.class);
+                Intent intent = new Intent(getContext(), HistoryActivity.class);
                 startActivity(intent);
             }
         });

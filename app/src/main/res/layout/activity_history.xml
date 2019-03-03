@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
-    tools:context=".Profile.HistoryActivity">
+    tools:context=".History.HistoryActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/res_history"
-        android:background="@drawable/scrim"
+    <FrameLayout
+        android:id="@+id/your_placeholder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 
 

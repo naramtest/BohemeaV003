@@ -1,0 +1,85 @@
+package com.emargystudio.bohemeav0021.ViewHolder;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.emargystudio.bohemeav0021.Common;
+import com.emargystudio.bohemeav0021.History.OrderHistoryFragment;
+import com.emargystudio.bohemeav0021.InterFace.ItemClickListener;
+import com.emargystudio.bohemeav0021.Model.FoodOrder;
+import com.emargystudio.bohemeav0021.R;
+
+import java.util.ArrayList;
+
+public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.OrderHistoryViewHolder> {
+
+    public interface EventHandler {
+        void handle(int position); // if u need know position. If no, just create method without params
+    }
+
+    private Context context;
+    private EventHandler handler;
+    private ArrayList<FoodOrder> foodOrders;
+
+
+
+    public OrderHistoryAdapter(Context context, ArrayList<FoodOrder> foodOrders,EventHandler handler) {
+        this.context = context;
+        this.foodOrders = foodOrders;
+        this.handler = handler;
+    }
+
+    @NonNull
+    @Override
+    public OrderHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        final View view = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.order_history_item, viewGroup, false);
+        return new OrderHistoryViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final OrderHistoryViewHolder holder, int i) {
+
+        holder.foodName.setText(foodOrders.get(i).getFood_name());
+        holder.foodPrice.setText(String.valueOf(foodOrders.get(i).getPrice()*foodOrders.get(i).getQuantity()));
+        holder.numberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
+            @Override
+            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
+                if (!Common.isCahnged){
+                    handler.handle(holder.getAdapterPosition());
+                }
+            }
+        });
+
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return foodOrders.size();
+    }
+
+    class OrderHistoryViewHolder extends RecyclerView.ViewHolder {
+
+        TextView foodName, foodPrice;
+        private ItemClickListener itemClickListener;
+        ElegantNumberButton numberButton;
+
+        public OrderHistoryViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            foodName = itemView.findViewById(R.id.foodName);
+            foodPrice = itemView.findViewById(R.id.foodPrice);
+            numberButton = itemView.findViewById(R.id.number_button);
+        }
+
+        }
+
+
+}

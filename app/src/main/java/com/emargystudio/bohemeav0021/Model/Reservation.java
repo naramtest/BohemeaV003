@@ -16,13 +16,15 @@ public class Reservation implements Parcelable {
     private double startHour;
     private double end_hour;
     private int chairNumber;
+    private int status;
+    private int total;
     private   ArrayList<Integer> tableArray = new ArrayList<>();
 
     public Reservation() {
     }
 
 
-    public Reservation(int res_id, int user_id, int table_id, int year, int month, int day, double startHour, double end_hour, int chairNumber) {
+    public Reservation(int res_id, int user_id, int table_id, int year, int month, int day, double startHour, double end_hour, int chairNumber, int status, int total) {
         this.res_id = res_id;
         this.user_id = user_id;
         this.table_id = table_id;
@@ -32,7 +34,11 @@ public class Reservation implements Parcelable {
         this.startHour = startHour;
         this.end_hour = end_hour;
         this.chairNumber = chairNumber;
+        this.status = status;
+        this.total = total;
     }
+
+
 
     protected Reservation(Parcel in) {
         res_id = in.readInt();
@@ -46,6 +52,8 @@ public class Reservation implements Parcelable {
         chairNumber = in.readInt();
     }
 
+
+
     public static final Creator<Reservation> CREATOR = new Creator<Reservation>() {
         @Override
         public Reservation createFromParcel(Parcel in) {
@@ -57,6 +65,23 @@ public class Reservation implements Parcelable {
             return new Reservation[size];
         }
     };
+
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
 
     public int getRes_id() {
         return res_id;

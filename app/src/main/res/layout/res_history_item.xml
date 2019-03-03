@@ -5,13 +5,17 @@
     android:id="@+id/res_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
     android:clickable="true"
     android:focusable="true"
     android:elevation="4dp"
     app:cardCornerRadius="8dp">
 
     <RelativeLayout
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -29,19 +33,17 @@
                 android:id="@+id/res_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="start"
+                android:gravity="start|bottom"
                 android:text="#356536"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18sp" />
 
             <TextView
-                android:layout_marginTop="8dp"
+
                 android:id="@+id/res_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:text="2019/02/28"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18sp" />
@@ -51,6 +53,7 @@
             android:layout_toEndOf="@+id/layout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="10dp"
             android:orientation="vertical">
 
@@ -63,10 +66,8 @@
                 android:text="0 S.P"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18sp" />
-
             <TextView
                 android:id="@+id/status"
-                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -76,7 +77,6 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
-
         <ImageView
             android:id="@+id/order"
             android:layout_width="wrap_content"
@@ -84,9 +84,10 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:gravity="end|center_vertical"
-            android:src="@drawable/ic_navigate_next_black_24dp" />
-
+            android:src="@drawable/ic_next_black" />
     </RelativeLayout>
+
+
 
 
 </android.support.v7.widget.CardView>
