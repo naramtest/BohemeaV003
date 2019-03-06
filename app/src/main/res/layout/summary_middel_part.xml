@@ -11,32 +11,34 @@
 
             <TextView
                 android:id="@+id/noOrder"
-
-                android:layout_below="@id/order"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No Orders"
-                style="@style/SummaryText"/>
+                style="@style/SummaryText"
+                android:textColor="@color/colorAccent"/>
 
 
 
         <android.support.v7.widget.RecyclerView
-            android:layout_below="@+id/order"
             android:id="@+id/order_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         </android.support.v7.widget.RecyclerView>
 
-        <TextView
+        <Button
             android:visibility="gone"
             android:layout_below="@id/order_history"
             android:id="@+id/submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
             android:text="Submit"
+            android:clickable="true"
+            android:focusable="true"
             style="@style/SummaryText"
-            android:textColor="@color/colorAccent"/>
+            android:background="@drawable/ripple_shape"
+            android:textColor="@color/colorAccent"
+            android:stateListAnimator="@animator/riase"/>
 
         <ProgressBar
             android:visibility="gone"

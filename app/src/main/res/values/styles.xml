@@ -30,5 +30,12 @@
     </style>
 
 
+    <style name="SettingsText" >
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
 
 </resources>

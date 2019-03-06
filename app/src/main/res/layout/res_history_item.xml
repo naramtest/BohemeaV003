@@ -13,6 +13,13 @@
     android:elevation="4dp"
     app:cardCornerRadius="8dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
     <RelativeLayout
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
@@ -29,65 +36,59 @@
             android:layout_marginEnd="10dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/res_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start|bottom"
-                android:text="#356536"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="18sp" />
 
             <TextView
 
                 android:id="@+id/res_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2019/02/28"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="18sp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_toStartOf="@id/order"
-            android:layout_toEndOf="@+id/layout1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="10dp"
-            android:orientation="vertical">
+                android:text="Date: 2019/02/28"
+                style="@style/SummaryText" />
 
             <TextView
                 android:id="@+id/price"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:gravity="end"
-                android:text="0 S.P"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="18sp" />
+                android:text="Total:0 S.P"
+                style="@style/SummaryText"
+                 />
+        </LinearLayout>
+
+
+
             <TextView
                 android:id="@+id/status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="New"
+                android:text="Waiting"
                 android:gravity="end"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/layout1"
                 android:textColor="@color/colorAccent"
-                android:textSize="18sp" />
-        </LinearLayout>
+                style="@style/SummaryText"
+                android:layout_marginEnd="8dp"/>
 
-        <ImageView
-            android:id="@+id/order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:gravity="end|center_vertical"
-            android:src="@drawable/ic_next_black" />
+
     </RelativeLayout>
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/divider"/>
 
+        <TextView
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SHOW"
+            style="@style/SummaryText"
+            android:gravity="end" />
+
+        </LinearLayout>
 
 
 </android.support.v7.widget.CardView>

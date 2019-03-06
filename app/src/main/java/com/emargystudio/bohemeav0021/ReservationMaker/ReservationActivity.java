@@ -18,6 +18,7 @@ public class ReservationActivity extends AppCompatActivity {
 
     ImageView next;
     Fragment datafragment;
+    Fragment fragment;
     Fragment tableFragment;
 
 
@@ -29,10 +30,10 @@ public class ReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reservation);
 
         if (savedInstanceState != null) {
-            //Restore the datafragment's instance
-            datafragment = getSupportFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+            //Restore the dataFragment's instance
+            fragment = getSupportFragmentManager().getFragment(savedInstanceState, "myFragmentName");
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.your_placeholder, datafragment);
+            ft.replace(R.id.your_placeholder, fragment);
             ft.commit();
         }else {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -48,7 +49,7 @@ public class ReservationActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        //Save the datafragment's instance
+        //Save the dataFragment's instance
 
         datafragment = getSupportFragmentManager().findFragmentByTag("Data");
         tableFragment = getSupportFragmentManager().findFragmentByTag("table");
@@ -60,15 +61,4 @@ public class ReservationActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        Fragment summaryFragment = getSupportFragmentManager().findFragmentByTag("Summary");
-        if (summaryFragment != null && summaryFragment.isVisible()){
-            Intent intent = new Intent(ReservationActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        }else {
-            super.onBackPressed();
-        }
-    }
 }

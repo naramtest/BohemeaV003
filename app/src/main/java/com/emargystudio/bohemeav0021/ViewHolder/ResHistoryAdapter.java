@@ -55,19 +55,20 @@ public class ResHistoryAdapter extends RecyclerView.Adapter<ResHistoryAdapter.Ri
         int status = reservations.get(i).getStatus();
         switch (status){
             case 0:
-                holder.status.setText("New");
+                holder.status.setText(context.getString(R.string.waiting));
+                holder.status.setTextColor(Color.parseColor("#dd3538"));
                 break;
 
             case 1:
-                holder.status.setText("Approved");
+                holder.status.setText(context.getString(R.string.aprroved));
                 holder.status.setTextColor(Color.parseColor("#006400"));
                 break;
         }
 
 
         holder.res_date.setText(date);
-        holder.res_id.setText("#"+String.valueOf(reservations.get(i).getRes_id()));
-        holder.price.setText(String.valueOf(reservations.get(i).getTotal() + " S.P"));
+        //holder.res_id.setText("#"+String.valueOf(reservations.get(i).getRes_id()));
+        holder.price.setText("Total: "+String.valueOf(reservations.get(i).getTotal() + " S.P"));
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,8 +77,8 @@ public class ResHistoryAdapter extends RecyclerView.Adapter<ResHistoryAdapter.Ri
                 Fragment fragment = new OrderHistoryFragment();
                 fragment.setArguments(args);
                 FragmentTransaction ft = ((HistoryActivity)context).getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.your_placeholder, fragment,"ResHistory");
-                ft.addToBackStack("ResHistory");
+                ft.replace(R.id.your_placeholder, fragment,"Order");
+                ft.addToBackStack("Order");
                 ft.commit();
             }
         });
@@ -93,7 +94,6 @@ public class ResHistoryAdapter extends RecyclerView.Adapter<ResHistoryAdapter.Ri
     class RisHistoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView res_date, price , res_id,status ;
-        ImageView  order;
         CardView cardView;
         private ItemClickListener itemClickListener;
 
@@ -102,8 +102,7 @@ public class ResHistoryAdapter extends RecyclerView.Adapter<ResHistoryAdapter.Ri
 
             res_date  = itemView.findViewById(R.id.res_date);
             price = itemView.findViewById(R.id.price);
-            res_id = itemView.findViewById(R.id.res_id);
-            order = itemView.findViewById(R.id.order);
+            //res_id = itemView.findViewById(R.id.res_id);
             status = itemView.findViewById(R.id.status);
             cardView = itemView.findViewById(R.id.res_container);
             itemView.setOnClickListener(this);

@@ -67,4 +67,13 @@ public class SharedPreferenceManger {
         return false;
     }
 
+    public void updatPhoneNumber(int phone_number){
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(PHONE_NUMBER,phone_number);
+        editor.apply();
+
+
+    }
+
 }

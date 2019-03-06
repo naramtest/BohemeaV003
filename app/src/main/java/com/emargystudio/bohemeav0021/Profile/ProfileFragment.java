@@ -7,10 +7,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.emargystudio.bohemeav0021.History.HistoryActivity;
 import com.emargystudio.bohemeav0021.Model.User;
@@ -28,8 +32,9 @@ public class ProfileFragment extends Fragment {
 
 
     CircleImageView profile_photo;
-    CollapsingToolbarLayout collapsingToolbarLayout;
     TextView userName , historyDetails;
+    ImageView settings;
+    Toolbar toolbar;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -60,13 +65,31 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.your_placeholder, new SettingsFragment(),"Settings");
+                ft.addToBackStack("Settings");
+                ft.commit();
+            }
+        });
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     public void initView(View view){
         profile_photo = view.findViewById(R.id.profile_pic);
-        collapsingToolbarLayout = view.findViewById(R.id.collapsing);
         userName = view.findViewById(R.id.user_name);
         historyDetails = view.findViewById(R.id.history_details);
+        settings = view.findViewById(R.id.settings);
+        toolbar = view.findViewById(R.id.tool_bar);
 
     }
 

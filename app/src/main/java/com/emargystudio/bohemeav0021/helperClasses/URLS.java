@@ -12,4 +12,7 @@ public class URLS {
     public static final String test = "https://safitatestapp.000webhostapp.com/server_side.php";
     public static final String reservation_query_id = "https://safitatestapp.000webhostapp.com/reservation_query_id.php?user_id=";
     public static final String order_query_id = "https://safitatestapp.000webhostapp.com/order_query_id.php?res_id=";
+    public static final String cancelReservation = "https://safitatestapp.000webhostapp.com/cancel_reservation.php?res_id=";
+    public static final String edit_order = "https://safitatestapp.000webhostapp.com/edit_order.php";
+    public static final String update_phone = "https://safitatestapp.000webhostapp.com/update_phone.php?id=";
 }

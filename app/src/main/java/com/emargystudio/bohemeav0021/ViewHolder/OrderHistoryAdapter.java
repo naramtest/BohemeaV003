@@ -48,17 +48,23 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
         holder.foodName.setText(foodOrders.get(i).getFood_name());
         holder.foodPrice.setText(String.valueOf(foodOrders.get(i).getPrice()*foodOrders.get(i).getQuantity()));
+        holder.numberButton.setNumber(String.valueOf(foodOrders.get(i).getQuantity()));
         holder.numberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
                 if (!Common.isCahnged){
                     handler.handle(holder.getAdapterPosition());
+                    foodOrders.get(holder.getAdapterPosition()).setQuantity(newValue);
+                    holder.foodPrice.setText(String.valueOf(foodOrders.get(holder.getAdapterPosition()).getPrice()*foodOrders.get(holder.getAdapterPosition()).getQuantity()));
                 }
             }
         });
 
     }
 
+    public ArrayList<FoodOrder> getFoodOrders() {
+        return foodOrders;
+    }
 
     @Override
     public int getItemCount() {

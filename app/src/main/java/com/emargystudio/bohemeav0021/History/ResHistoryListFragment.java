@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -42,6 +43,8 @@ public class ResHistoryListFragment extends Fragment {
     SharedPreferenceManger sharedPreferenceManger;
     ResHistoryAdapter resHistoryAdapter;
 
+    ProgressBar progressBar;
+
     public ResHistoryListFragment() {
         // Required empty public constructor
     }
@@ -59,11 +62,17 @@ public class ResHistoryListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sharedPreferenceManger = SharedPreferenceManger.getInstance(getContext());
         user = sharedPreferenceManger.getUserData();
-        reservationQuery();
+        progressBar = view.findViewById(R.id.progress_bar);
         initRecyclerView(view);
+        reservationQuery();
+
     }
 
     public void reservationQuery(){
+        if (resHistoryAdapter.getItemCount() == 0){
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URLS.reservation_query_id+user.getUserId(),
                 new Response.Listener<String>() {
                     @Override
@@ -76,9 +85,15 @@ public class ResHistoryListFragment extends Fragment {
 
                                 JSONArray jsonArrayReservation =  jsonObject.getJSONArray("reservations");
 
+                                if (reservations != null){
+                                    reservations.clear();
+                                }
                                 for(int i = 0 ; i<jsonArrayReservation.length(); i++){
                                     JSONObject jsonObjectSingleRes = jsonArrayReservation.getJSONObject(i);
                                     Log.d(TAG, "onResponse: "+jsonObjectSingleRes.toString());
+                                    if (jsonObjectSingleRes.getInt("status") ==2){
+
+                                    }else {
                                     reservations.add(new Reservation(jsonObjectSingleRes.getInt("res_id"),
                                             jsonObjectSingleRes.getInt("user_id"),
                                             jsonObjectSingleRes.getInt("table_id"),
@@ -91,17 +106,20 @@ public class ResHistoryListFragment extends Fragment {
                                             jsonObjectSingleRes.getInt("status"),
                                             jsonObjectSingleRes.getInt("total")));
 
-
+                                    }
                                 }
                                 Collections.reverse(reservations);
                                 resHistoryAdapter.notifyDataSetChanged();
+                                progressBar.setVisibility(View.GONE);
 
 
                             }else{
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(getContext(), "Please check your internet connection and try again later .... ", Toast.LENGTH_SHORT).show();
 
                             }
                         }catch (JSONException e){
+                            progressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                         }
                     }
@@ -109,6 +127,7 @@ public class ResHistoryListFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getContext(),"response error", Toast.LENGTH_LONG).show();
                         Log.d(TAG, "onErrorResponse: "+ error.getMessage());
                     }

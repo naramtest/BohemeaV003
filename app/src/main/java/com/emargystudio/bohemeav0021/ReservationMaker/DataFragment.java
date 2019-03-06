@@ -44,7 +44,6 @@ public class DataFragment extends Fragment {
     private static final String TAG = "DataFragment";
 
     TextView txtData;
-    ImageView backBtn;
     EditText edtDate , edtHour , edtChairs;
     FloatingActionButton nextFAB;
     TextInputLayout dataLayout,hourLayout,chairLayout;
@@ -97,6 +96,11 @@ public class DataFragment extends Fragment {
 
 
         // listener
+        listener(currentYear, currentMonth, currentDay, currentHour, currentMinute);
+
+    }
+
+    private void listener(final int currentYear, final int currentMonth, final int currentDay, final int currentHour, final int currentMinute) {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +164,6 @@ public class DataFragment extends Fragment {
                 return false;
             }
         });
-
     }
 
     private void initView(@NonNull View view) {
