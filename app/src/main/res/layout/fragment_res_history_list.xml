@@ -6,6 +6,35 @@
     android:background="@drawable/my_bg"
     tools:context=".History.ResHistoryListFragment">
 
+
+    <!--empty view-->
+    <RelativeLayout
+        android:visibility="gone"
+        android:background="@color/white"
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/image_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/emptyresturant"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:id="@+id/text_cart"
+            android:layout_marginTop="12dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/image_cart"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="You haven't made any reservation yet ...." />
+
+
+    </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/res_history"
         android:layout_marginBottom="8dp"

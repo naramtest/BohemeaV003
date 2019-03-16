@@ -1,10 +1,8 @@
 package com.emargystudio.bohemeav0021;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,26 +21,21 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.emargystudio.bohemeav0021.Model.User;
 import com.emargystudio.bohemeav0021.helperClasses.SharedPreferenceManger;
 import com.emargystudio.bohemeav0021.helperClasses.URLS;
 import com.emargystudio.bohemeav0021.helperClasses.VolleyHandler;
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.facebook.ParseFacebookUtils;
-
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,104 +44,85 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     Button btnLogin;
+    TextView bohemea;
+    CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnLogin = findViewById(R.id.btnlogin);
+        bohemea = findViewById(R.id.bohemea);
+        Typeface face = Typeface.createFromAsset(MainActivity.this.getAssets(),"fonts/NABILA.TTF");
+        bohemea.setTypeface(face);
+
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+
+
+                        getData(object);
+                    }
+                });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields","name,email,picture.type(large)");
+                request.setParameters(parameters);
+                request.executeAsync();
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                facebookLogin();
-
+                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this,Arrays.asList("public_profile","email"));
             }
         });
 
     }
 
+    private void getData(JSONObject object) {
 
-    public void facebookLogin() {
-        Collection<String> permissions = Arrays.asList("public_profile", "email");
+        final JSONObject mPicture;
+        try {
+            mPicture = object.getJSONObject("picture");
+            final JSONObject mPictureData = mPicture.getJSONObject("data");
+            final boolean mSilhouette = mPictureData.getBoolean("is_silhouette");
 
-        ParseFacebookUtils.logInWithReadPermissionsInBackground(MainActivity.this, permissions, new LogInCallback() {
+            final String mImageUrl = mPictureData.getString("url");
+            String name = object.getString("name");
+            String email = object.getString("email");
 
-            @Override
-            public void done(ParseUser user, ParseException err) {
-                if (err != null) {
-
-                    ParseUser.logOut();
-                    Log.e("err", "err", err);
-                }
-                if (user == null) {
-                    ParseUser.logOut();
-                    Toast.makeText(MainActivity.this, "Make sure you have access to your facebook account", Toast.LENGTH_LONG).show();
-
-                } else if (user.isNew()) {
-
-                    Toast.makeText(MainActivity.this, "Thank you for choosing our app", Toast.LENGTH_LONG).show();
-                    getUserDetailFromFB();
+            loginUser(name,email,mImageUrl);
 
 
-                } else {
 
-                    Toast.makeText(MainActivity.this, "Welcome back "+user.getUsername(), Toast.LENGTH_LONG).show();
-                    loginUser(user);
-
-                }
-            }
-        });
-    }
-
-    public void getUserDetailFromFB(){
-        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),new  GraphRequest.GraphJSONObjectCallback(){
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                final ParseUser user = ParseUser.getCurrentUser();
-                try{
-                    user.setUsername(object.getString("name"));
-                }catch(JSONException e){
-                    e.printStackTrace();
-                }
-                try{
-                    user.setEmail(object.getString("email"));
-                }catch(JSONException e){
-                    e.printStackTrace();
-                }
-                if(response.getError() == null)
-                {
-                    try
-                    {
-                        final JSONObject mPicture = object.getJSONObject("picture");
-                        final JSONObject mPictureData = mPicture.getJSONObject("data");
-                        final boolean mSilhouette = mPictureData.getBoolean("is_silhouette");
-                        final String mImageUrl = mPictureData.getString("url");
-                        user.put("image", mImageUrl);
-                    }
-
-                    catch (JSONException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-                user.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        alertTable(user);
-                    }
-                });
-            }
-        });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields","name,email,picture.type(large)");
-        request.setParameters(parameters);
-        request.executeAsync();
-
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private void alertDisplayer(){
+
+
+
+    private void sendIntent(){
 
         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -158,10 +132,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void registerUser(final ParseUser user , final String phone_number){
+    //mySql register
+    public void registerUser(final String name, final String email , final String profile_image , final String phone_number){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLS.register_api,
                 new Response.Listener<String>() {
@@ -171,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             if (!jsonObject.getBoolean("error")){
                                 JSONObject jsonObjectUser =  jsonObject.getJSONObject("user");
+                                Log.d(TAG, "onResponse: "+jsonObjectUser.toString());
 
                                 User user = new User(jsonObjectUser.getInt("id"),jsonObjectUser.getString("user_name"),jsonObjectUser.getString("user_email")
                                         ,jsonObjectUser.getString("user_photo"),jsonObjectUser.getInt("user_phone_number"));
@@ -178,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 //store user data inside sharedPreferences
                                 SharedPreferenceManger.getInstance(getApplicationContext()).storeUserData(user);
-                                alertDisplayer();
+                                sendIntent();
                             }
 
                         }catch (JSONException e){
@@ -189,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "onErrorResponse: "+error.toString());
                     }
                 }
         ){
@@ -196,9 +173,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map userData = new HashMap<>();
-                userData.put("user_name",user.getUsername());
-                userData.put("user_email",user.getEmail());
-                userData.put("user_photo",user.getString("image"));
+                userData.put("user_name",name);
+                userData.put("user_email",email);
+                userData.put("user_photo",profile_image);
                 userData.put("user_phone_number",phone_number);
                 return  userData;
             }
@@ -211,36 +188,46 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void loginUser(final ParseUser user){
-        String email = user.getEmail();
+    public void loginUser(final String name, final String email , final String profile_image ){
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URLS.login_user+email,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
+                        Log.d(TAG, "onResponse: "+response);
 
-                            if(!jsonObject.getBoolean("error")){
-                                JSONObject jsonObjectUser =  jsonObject.getJSONObject("user");
-                                Log.d(TAG, "onResponse: "+jsonObjectUser.toString());
 
-                                User user = new User(jsonObjectUser.getInt("id"),jsonObjectUser.getString("user_name"),jsonObjectUser.getString("user_email")
-                                        ,jsonObjectUser.getString("user_photo"),jsonObjectUser.getInt("user_phone_number"));
-                                //store user data inside sharedPreferences
-                                SharedPreferenceManger.getInstance(getApplicationContext()).storeUserData(user);
-                                alertDisplayer();
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+
+                                if (!jsonObject.getBoolean("error")) {
+                                    JSONObject jsonObjectUser = jsonObject.getJSONObject("user");
+
+                                    if (jsonObjectUser.isNull("id")){
+                                        alertTable(name,email,profile_image);
+                                    }else {
+
+                                        User user = new User(jsonObjectUser.getInt("id"), jsonObjectUser.getString("user_name"), jsonObjectUser.getString("user_email")
+                                                , jsonObjectUser.getString("user_photo"), jsonObjectUser.getInt("user_phone_number"));
+                                        //store user data inside sharedPreferences
+                                        SharedPreferenceManger.getInstance(getApplicationContext()).storeUserData(user);
+                                        sendIntent();
+
+                                    }
+                                }
+
+
+                            } catch (JSONException e) {
+                                Log.d(TAG, "onResponse: " + e.getMessage());
                             }
 
-                        }catch (JSONException e){
-                            Log.d(TAG, "onResponse: "+e.getMessage());
-                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this,getString(R.string.internet_off),Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -252,7 +239,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void alertTable(final ParseUser user){
+    //adding phone_number
+    public void alertTable(final String name, final String email , final String profile_image ){
         final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
         alert.setTitle("One more step ...");
         LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -273,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                String phone_number = edtPhone.getText().toString();
                 if (!phone_number.isEmpty()){
-                    registerUser(user,phone_number);
+                    registerUser(name,email,profile_image,phone_number);
                     dialog.dismiss();
                 }else {
                     layout.setError("Can't be empty");

@@ -40,16 +40,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Reservation History"
+                tools:text="Reservation History"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Price: 3 S.P"
+                tools:text="Price: 3 S.P"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="14sp" />
         </LinearLayout>

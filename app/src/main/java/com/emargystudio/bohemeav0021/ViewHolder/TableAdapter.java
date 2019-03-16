@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -46,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.emargystudio.bohemeav0021.Common.isOrdered;
 import static com.emargystudio.bohemeav0021.Common.res_id;
 import static com.emargystudio.bohemeav0021.Common.total;
 
@@ -269,7 +271,12 @@ public class TableAdapter extends RecyclerView.Adapter<TableViewHolder> {
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View alertLayout = li.inflate(R.layout.alert_reser_done,null);
         LinearLayout menu = alertLayout.findViewById(R.id.menu_container);
+        RelativeLayout menuTxt = alertLayout.findViewById(R.id.menu);
+        if (isOrdered){
+            menuTxt.setVisibility(View.GONE);
+        }
         alert.setView(alertLayout);
+
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

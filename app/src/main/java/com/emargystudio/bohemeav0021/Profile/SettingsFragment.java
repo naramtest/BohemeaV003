@@ -26,7 +26,8 @@ import com.emargystudio.bohemeav0021.R;
 import com.emargystudio.bohemeav0021.helperClasses.SharedPreferenceManger;
 import com.emargystudio.bohemeav0021.helperClasses.URLS;
 import com.emargystudio.bohemeav0021.helperClasses.VolleyHandler;
-import com.parse.ParseUser;
+import com.facebook.login.LoginManager;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,7 +83,8 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 sharedPreferenceManger.logUserOut();
-                ParseUser.logOut();
+                LoginManager.getInstance().logOut();
+                Toast.makeText(getContext(), "Good bye .....", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

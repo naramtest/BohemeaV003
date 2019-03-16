@@ -9,6 +9,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileFragment extends Fragment {
+    private static final String TAG = "ProfileFragment";
 
     private SharedPreferenceManger sharedPreferenceManger;
     User user;
@@ -95,6 +97,7 @@ public class ProfileFragment extends Fragment {
 
     public void setupView(){
         user = sharedPreferenceManger.getUserData();
+        Log.d(TAG, "setupView: "+user.getUserPhoto());
         Picasso.get().load(user.getUserPhoto()).into(profile_photo);
         userName.setText(user.getUserName());
 

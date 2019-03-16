@@ -36,9 +36,11 @@
                         <ImageView
                             android:id="@+id/settings"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_gravity="end"
-                            android:layout_marginEnd="16dp"
+                            android:padding="16dp"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:src="@drawable/ic_settings" />
 
                     </android.support.v7.widget.Toolbar>

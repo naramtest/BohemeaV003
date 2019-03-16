@@ -229,7 +229,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
                 for (int i =0 ; i< foodOrders.size();i++ ){
                     total1 += foodOrders.get(i).getPrice()*foodOrders.get(i).getQuantity();
                 }
-                txtTotalPrice.setText(fmt.format(total1));
+                txtTotalPrice.setText(String.valueOf(total+" S.P"));
                 Common.isOrdered = true;
                 checkEmpty();
             }

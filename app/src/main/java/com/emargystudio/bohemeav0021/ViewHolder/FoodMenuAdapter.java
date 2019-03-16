@@ -49,6 +49,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.FoodMe
 
         Picasso.get().load(foodMenus.get(i).getImage_url()).into(holder.foodImage);
         holder.foodName.setText(foodMenus.get(i).getName());
+        holder.price.setText("Price: "+foodMenus.get(i).getPrice()+" S.P");
 
     }
 
@@ -60,12 +61,14 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.FoodMe
     class FoodMenuViewHolder extends RecyclerView.ViewHolder {
 
         ImageView foodImage;
-        TextView foodName;
+        TextView foodName,price;
+
 
         public FoodMenuViewHolder(@NonNull View itemView) {
             super(itemView);
             foodImage = itemView.findViewById(R.id.food_image);
             foodName  = itemView.findViewById(R.id.food_name);
+            price     =itemView.findViewById(R.id.price);
         }
 
     }

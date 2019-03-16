@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BohemeaV0.0.21</string>
+    <string name="app_name">Bohemea</string>
     <!-- parse setup-->
     <string name="back4app_server_url">https://parseapi.back4app.com/</string>
     <string name="back4app_app_id">greQpkjfhwkBlBEurz97GDHK36L714ig97682cBq</string>

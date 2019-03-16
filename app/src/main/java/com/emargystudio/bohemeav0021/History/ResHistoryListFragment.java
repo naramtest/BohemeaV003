@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -44,6 +45,8 @@ public class ResHistoryListFragment extends Fragment {
     ResHistoryAdapter resHistoryAdapter;
 
     ProgressBar progressBar;
+    RelativeLayout emptyView;
+    RecyclerView recyclerView;
 
     public ResHistoryListFragment() {
         // Required empty public constructor
@@ -63,6 +66,8 @@ public class ResHistoryListFragment extends Fragment {
         sharedPreferenceManger = SharedPreferenceManger.getInstance(getContext());
         user = sharedPreferenceManger.getUserData();
         progressBar = view.findViewById(R.id.progress_bar);
+        emptyView = view.findViewById(R.id.emptyView);
+
         initRecyclerView(view);
         reservationQuery();
 
@@ -109,6 +114,13 @@ public class ResHistoryListFragment extends Fragment {
                                     }
                                 }
                                 Collections.reverse(reservations);
+                                if (reservations.size() == 0 && reservations.isEmpty()){
+                                    emptyView.setVisibility(View.VISIBLE);
+                                    recyclerView.setVisibility(View.GONE);
+                                }else {
+                                    emptyView.setVisibility(View.GONE);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                }
                                 resHistoryAdapter.notifyDataSetChanged();
                                 progressBar.setVisibility(View.GONE);
 
@@ -141,8 +153,7 @@ public class ResHistoryListFragment extends Fragment {
 
 
     private void initRecyclerView(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.res_history);
-
+        recyclerView = view.findViewById(R.id.res_history);
         resHistoryAdapter = new ResHistoryAdapter(getContext(), reservations);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(resHistoryAdapter);
