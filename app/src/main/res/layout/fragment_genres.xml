@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:background="@color/white"
+    tools:context=".Cinema.GenresFragment">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:clipChildren="false"
+        android:layout_above="@id/movie_title"/>
+
+    <TextView
+        android:layout_above="@+id/choose"
+        android:id="@+id/movie_title"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="42dp"
+        android:layout_marginLeft="42dp"
+        style="@style/text_black"
+        />
+
+    <Button
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:id="@+id/choose"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Choose"
+        android:background="@drawable/white_button"/>
+    </RelativeLayout>
+

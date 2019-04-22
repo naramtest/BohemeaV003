@@ -211,7 +211,11 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
             hour.setText(sHour);
 
             //table and chair number
-            table_number.setText(String.valueOf("Table Number: "+reservation.getTable_id()));
+            if (reservation.getTable_id() == -1){
+                table_number.setText(String.valueOf(reservation.getMovie_name()));
+            }else {
+                table_number.setText(String.valueOf("Table Number: "+reservation.getTable_id()));
+            }
             reservation_for.setText(String.valueOf("For: "+reservation.getChairNumber()));
 
             //totalTxt

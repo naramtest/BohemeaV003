@@ -68,19 +68,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:weightSum="2"
                 android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/table_number"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
                     android:layout_height="wrap_content"
+
                     style="@style/SummaryText"/>
 
                 <TextView
                     android:id="@+id/reservation_for"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="match_parent"
+                    android:gravity="end|center"
                     style="@style/SummaryText" />
             </LinearLayout>
 

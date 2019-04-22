@@ -1,14 +1,20 @@
 package com.emargystudio.bohemeav0021.Menu;
 
+import android.annotation.SuppressLint;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,7 +28,10 @@ import com.emargystudio.bohemeav0021.Model.FoodMenu;
 import com.emargystudio.bohemeav0021.Model.FoodOrder;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
+import com.emargystudio.bohemeav0021.OrderDatabase.FoodViewModel;
+import com.emargystudio.bohemeav0021.OrderDatabase.MovieViewModel;
 import com.emargystudio.bohemeav0021.R;
+import com.emargystudio.bohemeav0021.helperClasses.Heart;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
@@ -32,17 +41,24 @@ public class FoodDetailActivity extends AppCompatActivity {
 
 
     FoodMenu foodMenu;
+    FoodMenu sqlfood;
     // Member variable for the Database
     private AppDatabase mDb;
     private String note = " ";
 
 
     //widget
-    TextView  food_price, food_description , add_note;
-    ImageView food_image;
-    CollapsingToolbarLayout collapsingToolbarLayout;
+    TextView  food_price, food_description , add_note , food_name;
+    ImageView food_image ,like, like_red ;
     FloatingActionButton btnCart;
     ElegantNumberButton numberButton;
+
+
+
+    FoodViewModel viewModel;
+    private Boolean mLikedByCurrentUser ;
+    private GestureDetector mGestureDetector;
+    private Heart mHeart;
 
 
     @Override
@@ -55,9 +71,6 @@ public class FoodDetailActivity extends AppCompatActivity {
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
-        collapsingToolbarLayout = findViewById(R.id.collapsing);
-        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpendedAppBar);
-        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
         if (getIntent() != null){
             Bundle args =getIntent().getExtras();
@@ -90,6 +103,10 @@ public class FoodDetailActivity extends AppCompatActivity {
 
             }
         });
+
+
+        databaseOperations();
+        mGestureDetector = new GestureDetector(FoodDetailActivity.this, new GestureListener());
     }
 
     private void addToCart() {
@@ -130,6 +147,10 @@ public class FoodDetailActivity extends AppCompatActivity {
         btnCart = findViewById(R.id.btnCart);
         numberButton = findViewById(R.id.number_button);
         add_note = findViewById(R.id.add_note);
+        food_name = findViewById(R.id.food_name);
+        like = findViewById(R.id.like_white);
+        like_red = findViewById(R.id.like_red);
+        mHeart = new Heart(like, like_red);
     }
 
 
@@ -137,7 +158,7 @@ public class FoodDetailActivity extends AppCompatActivity {
         food_description.setText(foodMenu.getDescription());
         food_price.setText("Price: "+String.valueOf(foodMenu.getPrice())+" S.P");
         Picasso.get().load(foodMenu.getImage_url()).into(food_image);
-        collapsingToolbarLayout.setTitle(foodMenu.getName());
+        food_name.setText(foodMenu.getName());
 
     }
 
@@ -169,5 +190,92 @@ public class FoodDetailActivity extends AppCompatActivity {
         dialog.show();
     }
 
+
+    private void databaseOperations() {
+        viewModel = ViewModelProviders.of(this).get(FoodViewModel.class);
+        if (foodMenu !=null){
+            viewModel.getFood(foodMenu.getFood_id()).observe(this, new Observer<FoodMenu>() {
+                @Override
+                public void onChanged(@Nullable FoodMenu foodMenu) {
+                    if (foodMenu!=null){
+                        sqlfood = foodMenu;
+                        mLikedByCurrentUser = true;
+
+                    }else {
+                        mLikedByCurrentUser = false;
+
+                    }
+                    likeTrigger();
+
+                }
+            });
+        }
+
+
+    }
+
+
+    public class GestureListener extends GestureDetector.SimpleOnGestureListener{
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+
+            if (mLikedByCurrentUser){
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDb.foodDao().deleteFood(sqlfood);
+                        Log.d(TAG, "run: ");
+                    }
+                });
+            }else {
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDb.foodDao().insertFood(foodMenu);
+                        Log.d(TAG, "run: ");
+                    }
+                });
+            }
+            mHeart.toggleLike();
+            return true;
+        }
+
+    }
+    @SuppressLint("ClickableViewAccessibility")
+    public void likeTrigger(){
+        if(mLikedByCurrentUser){
+            like.setVisibility(View.GONE);
+            like_red.setVisibility(View.VISIBLE);
+            like_red.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return mGestureDetector.onTouchEvent(event);
+                }
+            });
+
+        }
+        else{
+            like.setVisibility(View.VISIBLE);
+            like_red.setVisibility(View.GONE);
+            like.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    Log.d(TAG, "onTouch: red heart touch detected.");
+                    return mGestureDetector.onTouchEvent(event);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        viewModel.getFood(foodMenu.getFood_id()).removeObservers(this);
+    }
 
 }

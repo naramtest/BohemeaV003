@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.emargystudio.bohemeav0021.HomeActivity;
@@ -37,7 +38,14 @@ public class ReservationActivity extends AppCompatActivity {
             ft.commit();
         }else {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.your_placeholder, new DataFragment(),"Data");
+            Fragment dataFragment = new DataFragment();
+            if (getIntent()!=null){
+                String movie_name = getIntent().getStringExtra("movie_name");
+                Bundle bundle = new Bundle();
+                bundle.putString("movie_name", movie_name);
+                dataFragment.setArguments(bundle);
+            }
+            ft.replace(R.id.your_placeholder,dataFragment,"Data");
             ft.commit();
         }
 

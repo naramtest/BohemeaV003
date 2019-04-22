@@ -11,17 +11,28 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.emargystudio.bohemeav0021.History.HistoryActivity;
 import com.emargystudio.bohemeav0021.Model.User;
 import com.emargystudio.bohemeav0021.R;
 import com.emargystudio.bohemeav0021.helperClasses.SharedPreferenceManger;
+import com.emargystudio.bohemeav0021.helperClasses.URLS;
+import com.emargystudio.bohemeav0021.helperClasses.VolleyHandler;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -34,7 +45,7 @@ public class ProfileFragment extends Fragment {
 
 
     CircleImageView profile_photo;
-    TextView userName , historyDetails;
+    TextView userName , historyDetails ,reservation_counter;
     ImageView settings;
     Toolbar toolbar;
 
@@ -84,6 +95,8 @@ public class ProfileFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+
+
     }
 
     public void initView(View view){
@@ -92,6 +105,8 @@ public class ProfileFragment extends Fragment {
         historyDetails = view.findViewById(R.id.history_details);
         settings = view.findViewById(R.id.settings);
         toolbar = view.findViewById(R.id.tool_bar);
+        reservation_counter = view.findViewById(R.id.reservation_counter);
+
 
     }
 
@@ -100,7 +115,62 @@ public class ProfileFragment extends Fragment {
         Log.d(TAG, "setupView: "+user.getUserPhoto());
         Picasso.get().load(user.getUserPhoto()).into(profile_photo);
         userName.setText(user.getUserName());
+        reservationQuery();
+    }
 
+
+    public void reservationQuery(){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URLS.reservation_query_id+user.getUserId(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            int reservation_co = 0;
+                            if(!jsonObject.getBoolean("error")){
+
+                                JSONArray jsonArrayReservation =  jsonObject.getJSONArray("reservations");
+
+
+                                for(int i = 0 ; i<jsonArrayReservation.length(); i++){
+                                    JSONObject jsonObjectSingleRes = jsonArrayReservation.getJSONObject(i);
+                                    Log.d(TAG, "onResponse: "+jsonObjectSingleRes.toString());
+                                    if (jsonObjectSingleRes.getInt("status") ==2){
+
+
+                                    }else {
+                                       reservation_co+=1;
+
+                                    }
+                                }
+                                reservation_counter.setText(String.valueOf(reservation_co));
+
+                            }else{
+
+                                Toast.makeText(getContext(), "Please check your internet connection and try again later .... ", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }catch (JSONException e){
+
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Toast.makeText(getContext(),"response error", Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "onErrorResponse: "+ error.getMessage());
+                    }
+                }
+
+        );
+
+
+        VolleyHandler.getInstance(getContext()).addRequetToQueue(stringRequest);
     }
 
 }

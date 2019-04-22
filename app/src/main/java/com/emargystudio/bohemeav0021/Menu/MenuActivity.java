@@ -1,8 +1,11 @@
 package com.emargystudio.bohemeav0021.Menu;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -31,6 +34,9 @@ import com.emargystudio.bohemeav0021.InterFace.ItemClickListener;
 import com.emargystudio.bohemeav0021.MainActivity;
 import com.emargystudio.bohemeav0021.Model.FoodCategory;
 import com.emargystudio.bohemeav0021.Model.FoodMenu;
+import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
+import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
+import com.emargystudio.bohemeav0021.OrderDatabase.FoodViewModel;
 import com.emargystudio.bohemeav0021.R;
 import com.emargystudio.bohemeav0021.ViewHolder.FoodCategoryAdapter;
 import com.emargystudio.bohemeav0021.ViewHolder.FoodMenuAdapter;
@@ -44,10 +50,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private static final String TAG = "MenuActivity";
+
     private Context mContext = MenuActivity.this;
 
 
@@ -59,14 +66,15 @@ public class MenuActivity extends AppCompatActivity {
     ProgressBar menuPb;
 
 
-    //var
+
     //category arrays
     ArrayList<FoodCategory> foodCategories = new ArrayList<>();
     FoodCategoryAdapter foodCategoryAdapter;
     //food arrays
     ArrayList<FoodMenu> foodMenus = new ArrayList<>();
     FoodMenuAdapter foodMenuAdapter;
-
+    private AppDatabase mDb;
+    FoodViewModel viewModel;
 
 
     @Override
@@ -85,6 +93,8 @@ public class MenuActivity extends AppCompatActivity {
                 categoryDialog();
             }
         });
+        mDb = AppDatabase.getInstance(MenuActivity.this);
+        viewModel = ViewModelProviders.of(this).get(FoodViewModel.class);
 
         setupBottomNavigationView();
         categoryQuery();
@@ -93,8 +103,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
     private void setupBottomNavigationView(){
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation);
+        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext,this,bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
@@ -107,15 +116,11 @@ public class MenuActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-
                             if(!jsonObject.getBoolean("error")){
-
                                 JSONArray jsonObjectCategory =  jsonObject.getJSONArray("categorys");
-
-
+                                foodCategories.add(new FoodCategory(-1,"Favorite"));
                                 for(int i = 0 ; i<jsonObjectCategory.length(); i++){
                                     JSONObject jsonObjectSingleCategory = jsonObjectCategory.getJSONObject(i);
                                     Log.i("jsonSingleStory",jsonObjectSingleCategory.toString());
@@ -123,14 +128,11 @@ public class MenuActivity extends AppCompatActivity {
                                     foodCategories.add(new FoodCategory(jsonObjectSingleCategory.getInt("id"),
                                             jsonObjectSingleCategory.getString("name")));
                                     if (i ==0){
+                                        currentCategory = 1;
                                         foodQuery(foodCategories.get(currentCategory).getId());
                                         categorySelected.setText(foodCategories.get(currentCategory).getName());
                                     }
-
                                 }
-
-
-
                             }else{
                                 Toast.makeText(MenuActivity.this,getString(R.string.internet_off),Toast.LENGTH_LONG).show();
                             }
@@ -150,6 +152,7 @@ public class MenuActivity extends AppCompatActivity {
         VolleyHandler.getInstance(MenuActivity.this).addRequetToQueue(stringRequest);
     }
 
+    
     public void categoryDialog(){
         final AlertDialog.Builder alert = new AlertDialog.Builder(MenuActivity.this);
         LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -162,14 +165,32 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
                 currentCategory = position;
-                Log.d(TAG, "onClick: "+currentCategory);
+                if (position!=0){
+                    foodQuery(foodCategories.get(currentCategory).getId());
+                }else {
+                    favorite();
+                }
                 categorySelected.setText(foodCategories.get(currentCategory).getName());
-                foodQuery(foodCategories.get(currentCategory).getId());
                 dialog.dismiss();
             }
+
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(MenuActivity.this));
         recyclerView.setAdapter(foodCategoryAdapter);
+    }
+
+    private void favorite() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (foodMenus!=null){
+                    foodMenus.clear();
+                }
+                List<FoodMenu> foodMenuList = mDb.foodDao().loadAllFoodsAdapter();
+                foodMenus.addAll(foodMenuList);
+                foodMenuAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void foodQuery(int category_id){
@@ -269,5 +290,24 @@ public class MenuActivity extends AppCompatActivity {
             super.onBackPressed();
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (currentCategory == 0){
+            viewModel.getTasks().observe(MenuActivity.this, new Observer<List<FoodMenu>>() {
+                @Override
+                public void onChanged(@Nullable List<FoodMenu> foodMenus1) {
+                    if (foodMenus!=null){
+                        foodMenus.clear();
+                    }
+                    assert foodMenus1 != null;
+                    assert foodMenus != null;
+                    foodMenus.addAll(foodMenus1);
+                    foodMenuAdapter.notifyDataSetChanged();
+                }
+            });
+        }
     }
 }

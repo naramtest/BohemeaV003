@@ -20,7 +20,7 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         if (savedInstanceState != null) {
-            //Restore the datafragment's instance
+
             ReservationFragment = getSupportFragmentManager().getFragment(savedInstanceState, "myFragmentName");
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.your_placeholder, ReservationFragment);

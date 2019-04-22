@@ -2,6 +2,8 @@ package com.emargystudio.bohemeav0021.ReservationMaker;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,18 +27,40 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.emargystudio.bohemeav0021.Common;
+import com.emargystudio.bohemeav0021.Menu.MenuActivity;
+import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
 import com.emargystudio.bohemeav0021.helperClasses.CommonReservation;
 import com.emargystudio.bohemeav0021.HomeActivity;
 import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.R;
+import com.emargystudio.bohemeav0021.helperClasses.URLS;
+import com.emargystudio.bohemeav0021.helperClasses.VolleyHandler;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.emargystudio.bohemeav0021.Common.isOrdered;
+import static com.emargystudio.bohemeav0021.Common.res_id;
+import static com.emargystudio.bohemeav0021.Common.total;
 import static com.emargystudio.bohemeav0021.helperClasses.CommonReservation.hideSoftKeyboard;
 
 
@@ -49,6 +74,7 @@ public class DataFragment extends Fragment {
     TextInputLayout dataLayout,hourLayout,chairLayout;
     ConstraintLayout constraintLayoutl;
     Toolbar toolbar;
+    String movie_name;
 
 
     //var
@@ -93,6 +119,15 @@ public class DataFragment extends Fragment {
 
         //initEditTexts();
 
+
+        //Cinema
+
+        Bundle bundle = this.getArguments();
+        if (bundle!=null){
+           movie_name = bundle.getString("movie_name");
+           reservation.setMovie_name(movie_name);
+
+        }
 
 
         // listener
@@ -293,25 +328,5 @@ public class DataFragment extends Fragment {
         }
     }
 
-//hide soft keyBoard
-//    public void setupUI(View view) {
-//
-//        // Set up touch listener for non-text box views to hide keyboard.
-//        if (!(view instanceof EditText)) {
-//            view.setOnTouchListener(new View.OnTouchListener() {
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    hideSoftKeyboard(getActivity());
-//                    return false;
-//                }
-//            });
-//        }
-//
-//        if (view instanceof ViewGroup) {
-//            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-//                View innerView = ((ViewGroup) view).getChildAt(i);
-//                setupUI(innerView);
-//            }
-//        }
 
- //   }
 }

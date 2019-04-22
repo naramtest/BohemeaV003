@@ -36,6 +36,18 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="text_black">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/bold_titles</item>
+        <item name="android:fontFamily">sans-serif-condensed-medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="text_grey">
+        <item name="android:fontFamily">sans-serif-condensed-medium</item>
+        <item name="android:textSize">@dimen/normal_title</item>
+    </style>
+
 
 
 </resources>

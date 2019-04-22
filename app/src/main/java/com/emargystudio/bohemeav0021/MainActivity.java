@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields","name,email,picture.type(large)");
+                parameters.putString("fields","id,name,email,picture.type(large)");
                 request.setParameters(parameters);
                 request.executeAsync();
 
@@ -101,11 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
         final JSONObject mPicture;
         try {
-            mPicture = object.getJSONObject("picture");
-            final JSONObject mPictureData = mPicture.getJSONObject("data");
-            final boolean mSilhouette = mPictureData.getBoolean("is_silhouette");
 
-            final String mImageUrl = mPictureData.getString("url");
+
+            final String mImageUrl = ("https://graph.facebook.com/" + object.getString("id") + "/picture?width=500&height=500");
             String name = object.getString("name");
             String email = object.getString("email");
 
@@ -150,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
 
                                 User user = new User(jsonObjectUser.getInt("id"),jsonObjectUser.getString("user_name"),jsonObjectUser.getString("user_email")
                                         ,jsonObjectUser.getString("user_photo"),jsonObjectUser.getInt("user_phone_number"));
-
 
                                 //store user data inside sharedPreferences
                                 SharedPreferenceManger.getInstance(getApplicationContext()).storeUserData(user);

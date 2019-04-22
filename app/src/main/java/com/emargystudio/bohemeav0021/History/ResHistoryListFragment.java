@@ -109,7 +109,8 @@ public class ResHistoryListFragment extends Fragment {
                                             jsonObjectSingleRes.getDouble("end_hour"),
                                             jsonObjectSingleRes.getInt("chairNumber"),
                                             jsonObjectSingleRes.getInt("status"),
-                                            jsonObjectSingleRes.getInt("total")));
+                                            jsonObjectSingleRes.getInt("total"),
+                                            jsonObjectSingleRes.getString("movie_name")));
 
                                     }
                                 }

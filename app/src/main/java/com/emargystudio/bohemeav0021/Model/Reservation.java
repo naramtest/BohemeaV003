@@ -18,70 +18,8 @@ public class Reservation implements Parcelable {
     private int chairNumber;
     private int status;
     private int total;
+    private String movie_name;
     private   ArrayList<Integer> tableArray = new ArrayList<>();
-
-    public Reservation() {
-    }
-
-
-    public Reservation(int res_id, int user_id, int table_id, int year, int month, int day, double startHour, double end_hour, int chairNumber, int status, int total) {
-        this.res_id = res_id;
-        this.user_id = user_id;
-        this.table_id = table_id;
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        this.startHour = startHour;
-        this.end_hour = end_hour;
-        this.chairNumber = chairNumber;
-        this.status = status;
-        this.total = total;
-    }
-
-
-
-    protected Reservation(Parcel in) {
-        res_id = in.readInt();
-        user_id = in.readInt();
-        table_id = in.readInt();
-        year = in.readInt();
-        month = in.readInt();
-        day = in.readInt();
-        startHour = in.readDouble();
-        end_hour = in.readDouble();
-        chairNumber = in.readInt();
-    }
-
-
-
-    public static final Creator<Reservation> CREATOR = new Creator<Reservation>() {
-        @Override
-        public Reservation createFromParcel(Parcel in) {
-            return new Reservation(in);
-        }
-
-        @Override
-        public Reservation[] newArray(int size) {
-            return new Reservation[size];
-        }
-    };
-
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
 
     public int getRes_id() {
         return res_id;
@@ -155,6 +93,30 @@ public class Reservation implements Parcelable {
         this.chairNumber = chairNumber;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public String getMovie_name() {
+        return movie_name;
+    }
+
+    public void setMovie_name(String movie_name) {
+        this.movie_name = movie_name;
+    }
+
     public ArrayList<Integer> getTableArray() {
         return tableArray;
     }
@@ -163,9 +125,38 @@ public class Reservation implements Parcelable {
         this.tableArray = tableArray;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public Reservation() {
+    }
+
+
+    public Reservation(int res_id, int user_id, int table_id, int year, int month, int day, double startHour, double end_hour, int chairNumber, int status, int total, String movie_name) {
+        this.res_id = res_id;
+        this.user_id = user_id;
+        this.table_id = table_id;
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.startHour = startHour;
+        this.end_hour = end_hour;
+        this.chairNumber = chairNumber;
+        this.status = status;
+        this.total = total;
+        this.movie_name = movie_name;
+    }
+
+    protected Reservation(Parcel in) {
+        res_id = in.readInt();
+        user_id = in.readInt();
+        table_id = in.readInt();
+        year = in.readInt();
+        month = in.readInt();
+        day = in.readInt();
+        startHour = in.readDouble();
+        end_hour = in.readDouble();
+        chairNumber = in.readInt();
+        status = in.readInt();
+        total = in.readInt();
+        movie_name = in.readString();
     }
 
     @Override
@@ -179,5 +170,25 @@ public class Reservation implements Parcelable {
         dest.writeDouble(startHour);
         dest.writeDouble(end_hour);
         dest.writeInt(chairNumber);
+        dest.writeInt(status);
+        dest.writeInt(total);
+        dest.writeString(movie_name);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Reservation> CREATOR = new Creator<Reservation>() {
+        @Override
+        public Reservation createFromParcel(Parcel in) {
+            return new Reservation(in);
+        }
+
+        @Override
+        public Reservation[] newArray(int size) {
+            return new Reservation[size];
+        }
+    };
 }

@@ -218,6 +218,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
 
     private void loadListFood() {
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
         viewModel.getTasks().observe(this, new Observer<List<FoodOrder>>() {
             @Override
             public void onChanged(@Nullable List<FoodOrder> foodOrders) {
