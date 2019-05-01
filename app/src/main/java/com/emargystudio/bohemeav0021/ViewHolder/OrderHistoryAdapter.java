@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.emargystudio.bohemeav0021.Common;
-import com.emargystudio.bohemeav0021.History.OrderHistoryFragment;
-import com.emargystudio.bohemeav0021.InterFace.ItemClickListener;
 import com.emargystudio.bohemeav0021.Model.FoodOrder;
 import com.emargystudio.bohemeav0021.R;
 
@@ -74,10 +72,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     class OrderHistoryViewHolder extends RecyclerView.ViewHolder {
 
         TextView foodName, foodPrice;
-        private ItemClickListener itemClickListener;
         ElegantNumberButton numberButton;
 
-        public OrderHistoryViewHolder(@NonNull View itemView) {
+        OrderHistoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
             foodName = itemView.findViewById(R.id.foodName);

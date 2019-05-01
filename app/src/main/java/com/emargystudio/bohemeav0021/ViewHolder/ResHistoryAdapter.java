@@ -11,14 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.emargystudio.bohemeav0021.History.HistoryActivity;
 import com.emargystudio.bohemeav0021.History.OrderHistoryFragment;
-import com.emargystudio.bohemeav0021.History.ResHistoryListFragment;
-import com.emargystudio.bohemeav0021.InterFace.ItemClickListener;
+
 import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.R;
 
@@ -28,7 +27,7 @@ public class ResHistoryAdapter extends RecyclerView.Adapter<ResHistoryAdapter.Ri
 
     private Context context;
     private ArrayList<Reservation> reservations;
-    private ItemClickListener itemClickListener;
+
 
     public ResHistoryAdapter(Context context, ArrayList<Reservation> reservations) {
         this.context = context;
@@ -67,8 +66,8 @@ public class ResHistoryAdapter extends RecyclerView.Adapter<ResHistoryAdapter.Ri
 
 
         holder.res_date.setText(date);
-        //holder.res_id.setText("#"+String.valueOf(reservations.get(i).getRes_id()));
-        holder.price.setText("Total: "+String.valueOf(reservations.get(i).getTotal() + " S.P"));
+        String price = String.format(context.getString(R.string.total_res_history_j),reservations.get(i).getTotal());
+        holder.price.setText(price);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +81,6 @@ public class ResHistoryAdapter extends RecyclerView.Adapter<ResHistoryAdapter.Ri
                 ft.commit();
             }
         });
-
     }
 
 
@@ -91,30 +89,19 @@ public class ResHistoryAdapter extends RecyclerView.Adapter<ResHistoryAdapter.Ri
         return reservations.size();
     }
 
-    class RisHistoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class RisHistoryViewHolder extends RecyclerView.ViewHolder {
 
-        TextView res_date, price , res_id,status ;
+        TextView res_date, price ,status ;
         CardView cardView;
-        private ItemClickListener itemClickListener;
 
-        public RisHistoryViewHolder(@NonNull View itemView) {
+        RisHistoryViewHolder(@NonNull View itemView) {
             super(itemView);
-
             res_date  = itemView.findViewById(R.id.res_date);
             price = itemView.findViewById(R.id.price);
             //res_id = itemView.findViewById(R.id.res_id);
             status = itemView.findViewById(R.id.status);
             cardView = itemView.findViewById(R.id.res_container);
-            itemView.setOnClickListener(this);
         }
 
-        public void setItemClickListener(ItemClickListener itemClickListener) {
-            this.itemClickListener = itemClickListener;
-        }
-
-        @Override
-        public void onClick(View v) {
-            itemClickListener.onClick(v, getAdapterPosition(), false);
-        }
     }
 }

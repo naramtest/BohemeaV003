@@ -15,20 +15,20 @@
             android:id="@+id/delete_icon"
             android:layout_width="@dimen/ic_delete"
             android:layout_height="@dimen/ic_delete"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/padd_10"
+            android:layout_marginEnd="@dimen/padd_10"
             android:src="@drawable/ic_delete_black_24dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/padd_10"
-            android:layout_toLeftOf="@id/delete_icon"
+            android:layout_marginEnd="@dimen/padd_10"
+            android:layout_toStartOf="@id/delete_icon"
             android:text="@string/delete"
             android:textColor="#fff"
-            android:textSize="13dp" />
+            android:textSize="13sp" />
 
     </RelativeLayout>
 
@@ -43,19 +43,19 @@
             android:id="@+id/thumbnail"
             android:layout_width="@dimen/thumbnail"
             android:layout_height="@dimen/thumbnail"
-            android:layout_marginRight="@dimen/activity_padding_horizontal"
+            android:layout_marginEnd="@dimen/activity_padding_horizontal"
             android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/thumbnail"
+            android:layout_toEndOf="@id/thumbnail"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
             android:maxLines="1"
             android:textColor="@color/item_name"
-            android:textSize="17dp" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/price"
@@ -63,16 +63,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
             android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/thumbnail"
+            android:layout_toEndOf="@id/thumbnail"
             android:textColor="@color/description"
-            android:textSize="12dp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@id/thumbnail"
+            android:layout_toEndOf="@id/thumbnail"
             android:textColor="@color/colorAccent"
             android:textStyle="bold" />
 

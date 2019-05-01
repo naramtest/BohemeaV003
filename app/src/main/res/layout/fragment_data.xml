@@ -48,15 +48,15 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/dateLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/choose_a_date"
             app:errorEnabled="true"
+            app:errorTextAppearance="@style/error_appearance"
             android:textColorHint="@color/colorPrimaryText"
-            app:boxBackgroundColor="@color/light"
             app:boxCornerRadiusTopEnd="6dp"
             app:boxCornerRadiusTopStart="6dp">
 
@@ -89,15 +89,15 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/hourLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/starts_at"
             app:errorEnabled="true"
+            app:errorTextAppearance="@style/error_appearance"
             android:textColorHint="@color/colorPrimaryText"
-            app:boxBackgroundColor="@color/light"
             app:boxCornerRadiusTopEnd="6dp"
             app:boxCornerRadiusTopStart="6dp">
 
@@ -113,6 +113,19 @@
 
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="359dp"
+        android:layout_marginBottom="639dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -132,16 +145,18 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/chairLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:layout_marginEnd="16dp"
-            android:hint="Reservation for: Enter a number"
+            android:hint="@string/reservation_for"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
             android:textColorHint="@color/colorPrimaryText"
             app:boxBackgroundColor="@color/white"
             app:boxCornerRadiusTopEnd="6dp"
             app:errorEnabled="true"
+            app:errorTextAppearance="@style/error_appearance"
             app:boxCornerRadiusTopStart="6dp">
 
             <android.support.v7.widget.AppCompatEditText
@@ -168,7 +183,8 @@
         android:clickable="true"
         android:src="@drawable/ic_next"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:focusable="true" />
 
     <RelativeLayout
         android:id="@+id/textContainer"
@@ -181,7 +197,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="It's just gonna take a minute"
+            android:text="@string/date_fregment_header"
             android:textColor="@color/colorPrimaryText"
             android:textSize="20sp"
             tools:layout_editor_absoluteY="224dp" />

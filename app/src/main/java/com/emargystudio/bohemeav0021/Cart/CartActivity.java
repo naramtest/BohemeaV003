@@ -6,11 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,18 +15,15 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -38,7 +32,6 @@ import com.emargystudio.bohemeav0021.Common;
 import com.emargystudio.bohemeav0021.HomeActivity;
 import com.emargystudio.bohemeav0021.Menu.MenuActivity;
 import com.emargystudio.bohemeav0021.Model.FoodOrder;
-import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
 import com.emargystudio.bohemeav0021.OrderDatabase.MainViewModel;
@@ -65,7 +58,7 @@ import static com.emargystudio.bohemeav0021.Common.total;
 
 public class CartActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
-    private static final String TAG = "CartActivity";
+
     private Context mContext = CartActivity.this;
     private static final int ACTIVITY_NUM = 3;
 
@@ -160,7 +153,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
                 ){
 
                     @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
+                    protected Map<String, String> getParams()  {
                         Map<String,String> param=new HashMap<>();
                         param.put("array",newDataArray);
                         param.put("total", String.valueOf(total));
@@ -200,14 +193,13 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
         if (Common.res_id == 0){
-            btnPlace.setText("Make a Reservation First");
+            btnPlace.setText(getString(R.string.cart_act_btn_make_res_first));
         }
     }
 
 
     private void setupBottomNavigationView(){
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation);
+        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext,this,bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
@@ -230,7 +222,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
                 for (int i =0 ; i< foodOrders.size();i++ ){
                     total1 += foodOrders.get(i).getPrice()*foodOrders.get(i).getQuantity();
                 }
-                txtTotalPrice.setText(String.valueOf(total+" S.P"));
+                txtTotalPrice.setText(String.format(getString(R.string.order_his_f_totalTxt),total1));
                 Common.isOrdered = true;
                 checkEmpty();
             }
@@ -262,8 +254,8 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
 
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, name + " removed from cart!", Snackbar.LENGTH_LONG);
-            snackbar.setAction("UNDO", new View.OnClickListener() {
+                    .make(coordinatorLayout, name + getString(R.string.cart_snackbar_remove), Snackbar.LENGTH_LONG);
+            snackbar.setAction(R.string.cart_snackbar_undo, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -304,7 +296,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
         LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View alertLayout = li.inflate(R.layout.alert_done,null);
         alert.setView(alertLayout);
-        alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(R.string.cart_done_dailog_done, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(CartActivity.this, HomeActivity.class);

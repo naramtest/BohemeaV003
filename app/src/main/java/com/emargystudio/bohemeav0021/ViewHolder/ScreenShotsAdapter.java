@@ -41,12 +41,12 @@ public class ScreenShotsAdapter extends RecyclerView.Adapter<ScreenShotsAdapter.
         return imagesUrl.size();
     }
 
-    public class ScreenShotsViewHolder extends RecyclerView.ViewHolder {
-        public ImageView moviePhoto;
+    class ScreenShotsViewHolder extends RecyclerView.ViewHolder {
+        ImageView moviePhoto;
 
-        public ScreenShotsViewHolder(View view) {
+        ScreenShotsViewHolder(View view) {
             super(view);
-            moviePhoto = (ImageView) view.findViewById(R.id.movie_home_pics);
+            moviePhoto = view.findViewById(R.id.movie_home_pics);
         }
     }
 }

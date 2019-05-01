@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import com.emargystudio.bohemeav0021.ViewHolder.CartAdapter;
 import com.emargystudio.bohemeav0021.ViewHolder.CartViewHolder;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingStart="16dp"
@@ -9,25 +10,16 @@
     android:paddingBottom="4dp"
     android:background="@color/white">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_checked"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="All Done!"
-            android:layout_marginStart="8dp"
+            android:text="@string/alert_done_all_done"
             android:textColor="@color/black"
-            android:layout_gravity="center"
+            android:gravity="center"
+            android:drawablePadding="8dp"
             android:textSize="18sp"
+            android:drawableStart="@drawable/ic_checked"
             android:textStyle="bold"/>
-    </LinearLayout>
-
 
     <TextView
         android:layout_width="match_parent"
@@ -35,15 +27,12 @@
         android:layout_marginTop="8dp"
         android:textSize="14sp"
         android:textColor="@color/black"
-        android:text="We will send you a notification when your reservation approved"/>
+        android:text="@string/alert_done_send_notification"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="*go to your profile to check your reservation history"/>
-
-
-
+        android:text="@string/alert_done_reservation_history"/>
 
 </LinearLayout>

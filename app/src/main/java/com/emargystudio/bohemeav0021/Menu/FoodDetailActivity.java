@@ -6,19 +6,19 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
+
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,15 +29,15 @@ import com.emargystudio.bohemeav0021.Model.FoodOrder;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
 import com.emargystudio.bohemeav0021.OrderDatabase.FoodViewModel;
-import com.emargystudio.bohemeav0021.OrderDatabase.MovieViewModel;
+
 import com.emargystudio.bohemeav0021.R;
 import com.emargystudio.bohemeav0021.helperClasses.Heart;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
+
 
 public class FoodDetailActivity extends AppCompatActivity {
 
-    private static final String TAG = "FoodDetailActivity";
+
 
 
     FoodMenu foodMenu;
@@ -74,9 +74,10 @@ public class FoodDetailActivity extends AppCompatActivity {
 
         if (getIntent() != null){
             Bundle args =getIntent().getExtras();
+            if (args != null)
             foodMenu = args.getParcelable("foodITem");
+            if (foodMenu!=null)
             getFoodDetail(foodMenu);
-            Log.d(TAG, "onCreate: " + foodMenu);
         }
 
         btnCart.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +100,7 @@ public class FoodDetailActivity extends AppCompatActivity {
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
 
                 int newPrice = foodMenu.getPrice()*newValue;
-                food_price.setText("Price: "+String.valueOf(newPrice)+" S.P");
+                food_price.setText(String.format(getString(R.string.foodDetailActivity_food_price),newPrice));
 
             }
         });
@@ -136,7 +137,7 @@ public class FoodDetailActivity extends AppCompatActivity {
 
         });
 
-        Toast.makeText(FoodDetailActivity.this, "Added To Cart", Toast.LENGTH_SHORT).show();
+        Toast.makeText(FoodDetailActivity.this, getString(R.string.foodDetailActivity_toast), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -156,7 +157,7 @@ public class FoodDetailActivity extends AppCompatActivity {
 
     private void getFoodDetail(FoodMenu foodMenu){
         food_description.setText(foodMenu.getDescription());
-        food_price.setText("Price: "+String.valueOf(foodMenu.getPrice())+" S.P");
+        food_price.setText(String.format(getString(R.string.foodDetailActivity_food_price),foodMenu.getPrice()));
         Picasso.get().load(foodMenu.getImage_url()).into(food_image);
         food_name.setText(foodMenu.getName());
 
@@ -165,19 +166,19 @@ public class FoodDetailActivity extends AppCompatActivity {
 
     public void showDialog(){
         final AlertDialog.Builder alert = new AlertDialog.Builder(FoodDetailActivity.this);
-        alert.setTitle("Make your order special");
+        alert.setTitle(getString(R.string.cart_update_dialog));
         LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View alertLayout = li.inflate(R.layout.alert_note,null);
         final EditText add_note_Edt = alertLayout.findViewById(R.id.addNoteEdt);
         alert.setView(alertLayout);
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(getString(R.string.cart_update_dialog_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
 
-        alert.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(R.string.foodDetailActivity_showDialog_addBtn, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -229,7 +230,7 @@ public class FoodDetailActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         mDb.foodDao().deleteFood(sqlfood);
-                        Log.d(TAG, "run: ");
+
                     }
                 });
             }else {
@@ -237,7 +238,7 @@ public class FoodDetailActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         mDb.foodDao().insertFood(foodMenu);
-                        Log.d(TAG, "run: ");
+
                     }
                 });
             }
@@ -265,7 +266,6 @@ public class FoodDetailActivity extends AppCompatActivity {
             like.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    Log.d(TAG, "onTouch: red heart touch detected.");
                     return mGestureDetector.onTouchEvent(event);
                 }
             });

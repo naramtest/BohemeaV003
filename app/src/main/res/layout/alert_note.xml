@@ -13,7 +13,6 @@
         android:paddingTop="8dp"
         android:layout_margin="8dp"
         android:elevation="4dp"
-
         app:boxBackgroundColor="@color/white"
         android:focusable="false">
 
@@ -22,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:inputType="textMultiLine"
-            android:hint="You Can Enter an Additional Note Here "
+            android:hint="@string/alert_note_edit_text_hint"
             android:gravity="top|start"/>
 
     </android.support.design.widget.TextInputLayout>

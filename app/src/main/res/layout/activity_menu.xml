@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Menu.MenuActivity">
 
-    <!--top part BAR-->
-
-
-    <!--Middle Part-->
-
-
-    <!--Bottom part-->
-
-
     <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

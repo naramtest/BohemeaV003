@@ -10,7 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -42,11 +42,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapter.EventHandler {
 
-    private static final String TAG = "OrderHistoryFragment";
+
 
     OrderHistoryAdapter orderHistoryAdapter;
     ArrayList<FoodOrder> foodOrders = new ArrayList<>();
@@ -57,7 +58,7 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
 
 
     //widgets
-    TextView date,hour,table_number ,reservation_for,name, totalTxt, back;
+    TextView date,hour,table_number ,reservation_for,name, totalTxt;
     RecyclerView recyclerView;
     View divider;
     TextView noOrder, summaryTxt;
@@ -72,7 +73,7 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_order_history, container, false);
@@ -113,7 +114,6 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         reservation_for = view.findViewById(R.id.reservation_for);
         name = view.findViewById(R.id.name);
         totalTxt = view.findViewById(R.id.total);
-        back = view.findViewById(R.id.back);
         recyclerView = view.findViewById(R.id.order_history);
         divider = view.findViewById(R.id.divider);
         progressBar = view.findViewById(R.id.progress_bar);
@@ -121,8 +121,10 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         submit = view.findViewById(R.id.submit);
         cancel = view.findViewById(R.id.cancel);
         summaryTxt = view.findViewById(R.id.summaryTxt);
-        Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NABILA.TTF");
-        summaryTxt.setTypeface(face);
+        if (getActivity()!=null){
+            Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NABILA.TTF");
+            summaryTxt.setTypeface(face);
+        }
 
     }
     public void orderQuery(){
@@ -134,7 +136,6 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            Log.d(TAG, "onResponse: "+response);
 
                             if(!jsonObject.getBoolean("error")){
 
@@ -159,11 +160,13 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
 
                             }else{
                                 progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getContext(), "Please check your internet connection and try again later .... ", Toast.LENGTH_SHORT).show();
+                                if (getActivity()!=null)
+                                    Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
 
                             }
                         }catch (JSONException e){
-                            e.printStackTrace();
+                            if (getActivity()!=null)
+                                Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
@@ -171,8 +174,9 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getContext(),"response error", Toast.LENGTH_LONG).show();
-                        Log.d(TAG, "onErrorResponse: "+ error.getMessage());
+                        if (getActivity()!=null)
+                            Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
+
                     }
                 }
 
@@ -247,15 +251,15 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         });
     }
     public void cancelAlert(){
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setMessage("Are you sure you want to cancel this reservation");
-        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        alert.setMessage(R.string.order_his_cancel_dialog_message);
+        alert.setNegativeButton(R.string.order_his_cancel_dialog_no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        alert.setPositiveButton("Yse", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(R.string.order_his_cancel_dialog_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, URLS.cancelReservation+reservation.getRes_id()+"&status="+2,
@@ -264,25 +268,30 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
                             public void onResponse(String response) {
                                 try {
                                     JSONObject jsonObject = new JSONObject(response);
-                                    Log.d(TAG, "onResponse: "+response);
 
                                     if(!jsonObject.getBoolean("error")){
-                                        Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-                                        getActivity().onBackPressed();
+                                        if (getActivity()!=null) {
+                                            Toast.makeText(getContext(), getActivity().getString(R.string.order_his_cancel_dialog_done), Toast.LENGTH_SHORT).show();
+                                            getActivity().onBackPressed();
+                                        }
                                     }else{
-                                        Toast.makeText(getContext(), "Please check your internet connection and try again later .... ", Toast.LENGTH_SHORT).show();
+                                        if (getActivity()!=null)
+                                            Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
 
                                     }
                                 }catch (JSONException e){
-                                    e.printStackTrace();
+                                    if (getActivity()!=null)
+                                    Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
+
                                 }
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getContext(),"response error", Toast.LENGTH_LONG).show();
-                                Log.d(TAG, "onErrorResponse: "+ error.getMessage());
+                                if (getActivity()!=null)
+                                Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
+
                             }
                         }
                 );
@@ -310,30 +319,30 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         newFoodOrders = orderHistoryAdapter.getFoodOrders();
         final int total = getTotal(newFoodOrders);
         final String newDataArray=gson.toJson(newFoodOrders);
-        Log.d(TAG, "updateOrder: "+newDataArray);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLS.edit_order,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
 
-                        Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
-                        totalTxt.setText(String.valueOf(total+" S.P"));
-
-
+                        if (getActivity()!=null) {
+                            Toast.makeText(getContext(), getActivity().getString(R.string.order_his_f_update_done), Toast.LENGTH_SHORT).show();
+                            totalTxt.setText(String.format(getActivity().getString(R.string.order_his_f_totalTxt), total));
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                        error.getMessage();
+                        if (getActivity()!=null)
+                            Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
+
                     }
                 }
         ){
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams()  {
                 Map<String,String> param=new HashMap<>();
                 param.put("array",newDataArray);
                 param.put("totalTxt", String.valueOf(total));
@@ -371,7 +380,6 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            Log.d(TAG, "onViewCreated: " + savedInstanceState.toString());
             Bundle bundle = savedInstanceState.getBundle("args");
             if (bundle != null) {
                 reservation = bundle.getParcelable(getString(R.string.reservation_bundle));

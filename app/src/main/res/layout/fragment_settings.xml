@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
-            android:hint="Edit your phone number"/>
+            android:hint="@string/settings_phoneEdt_hint"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -40,7 +40,7 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:background="@color/colorAccent"
         android:textColor="@color/white"
-        android:text="Save"
+        android:text="@string/setting_save"
         android:layout_gravity="bottom"/>
 
     </LinearLayout>
@@ -59,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         style="@style/SettingsText"
-        android:text="Log out"
+        android:text="@string/settings_logout"
         android:background="@drawable/ripple_shape"
         android:clickable="true"
         android:focusable="true"
@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         style="@style/SettingsText"
-        android:text="About Bohemea"
+        android:text="@string/setting_about"
         android:gravity="center_vertical"/>
 
 

@@ -2,17 +2,17 @@ package com.emargystudio.bohemeav0021.helperClasses;
 
 
 import android.app.Activity;
-import android.util.Log;
+
 import android.view.inputmethod.InputMethodManager;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
+
 
 
 public class CommonReservation {
 
-    private static final String TAG = "CommonReservation";
+
 
     public static String changeHourFormat(double hour){
         String stringHour ;

@@ -13,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon">
-        <activity android:name=".Cinema.MovieDetailsActivity"></activity>
+        tools:replace="android:icon"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Cinema.MovieDetailsActivity"/>
         <activity android:name=".Cinema.CinemaCategoryActivity" />
         <activity android:name=".History.HistoryActivity" />
         <activity android:name=".Menu.FoodDetailActivity" />
@@ -24,19 +25,10 @@
         <activity android:name=".Menu.MenuActivity" />
         <activity android:name=".ReservationMaker.ReservationActivity" />
 
-        <meta-data
-            android:name="com.parse.SERVER_URL"
-            android:value="@string/back4app_server_url" />
-        <meta-data
-            android:name="com.parse.APPLICATION_ID"
-            android:value="@string/back4app_app_id" />
-        <meta-data
-            android:name="com.parse.CLIENT_KEY"
-            android:value="@string/back4app_client_key" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider327368101452898"

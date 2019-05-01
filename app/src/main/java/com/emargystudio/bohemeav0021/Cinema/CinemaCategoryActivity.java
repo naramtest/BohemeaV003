@@ -9,12 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.emargystudio.bohemeav0021.R;
+import com.emargystudio.bohemeav0021.helperClasses.URLS;
 import com.emargystudio.bohemeav0021.helperClasses.VolleyHandler;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CinemaCategoryActivity extends AppCompatActivity  {
+
 
     private static final String TAG = "CinemaCategoryActivity";
     String[] genres = {"Action", "Adventure", "Animation", "Comedy", "Crime", "Documentary",
@@ -131,8 +134,8 @@ public class CinemaCategoryActivity extends AppCompatActivity  {
                 .commit();
     }
     private void suggestionQuery(){
-        String url = "http://naramalkoht.ml/bohemea/movies_suggestion.php";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URLS.movies_suggestion,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -157,20 +160,19 @@ public class CinemaCategoryActivity extends AppCompatActivity  {
                                     String query1 = (String) parent.getItemAtPosition(position);
                                     String query = query1.replace(" ","+");
                                     searchQuery(query);
-                                    Log.d(TAG, "onItemClick: "+query);
                                     searchView.closeSearch();
                                 }
                             });
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Toast.makeText(CinemaCategoryActivity.this, getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "onErrorResponse: " + error.toString());
+                        Toast.makeText(CinemaCategoryActivity.this, getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                     }
                 }
         );//end of string Request

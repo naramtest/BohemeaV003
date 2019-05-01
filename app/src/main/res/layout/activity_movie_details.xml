@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -25,18 +26,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
-                />
+                tools:ignore="ContentDescription" />
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/white_scrim"/>
+                android:src="@drawable/white_scrim"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/back_button"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_back"
-                android:padding="16dp"/>
+                android:padding="16dp"
+                tools:ignore="ContentDescription" />
 
             <RelativeLayout
                 android:layout_width="50dp"
@@ -50,7 +53,8 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:padding="16dp"
-                    android:src="@drawable/ic_like" />
+                    android:src="@drawable/ic_like"
+                    tools:ignore="ContentDescription" />
 
                 <ImageView
                     android:id="@+id/like_red"
@@ -61,7 +65,8 @@
                     android:focusable="true"
                     android:padding="16dp"
                     android:src="@drawable/ic_favorite_heart_button"
-                    android:visibility="invisible" />
+                    android:visibility="invisible"
+                    tools:ignore="ContentDescription" />
             </RelativeLayout>
 
 
@@ -127,7 +132,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="2"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -140,7 +146,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Release date" />
+                        android:text="@string/movie_details_release_date" />
 
                     <TextView
                         android:id="@+id/release_date"
@@ -165,7 +171,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-condensed-medium"
                         android:gravity="center"
-                        android:text="Length"
+                        android:text="@string/movie_details_length"
                         android:textSize="@dimen/normal_title" />
 
                     <TextView
@@ -193,10 +199,11 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-condensed-medium"
-                android:text="Summary"
+                android:text="@string/movie_details_summary"
                 android:textColor="@color/black"
                 android:textSize="@dimen/bold_titles"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="RtlHardcoded" />
 
             <com.codesgood.views.JustifiedTextView
                 android:id="@+id/overview"
@@ -217,10 +224,11 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-condensed-medium"
-                android:text="Screenshots"
+                android:text="@string/movie_details_screenshots"
                 android:textColor="@color/black"
                 android:textSize="@dimen/bold_titles"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/screenshots_rv"

@@ -1,5 +1,6 @@
 package com.emargystudio.bohemeav0021;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -7,16 +8,15 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,7 +25,7 @@ import com.emargystudio.bohemeav0021.Model.User;
 import com.emargystudio.bohemeav0021.helperClasses.SharedPreferenceManger;
 import com.emargystudio.bohemeav0021.helperClasses.URLS;
 import com.emargystudio.bohemeav0021.helperClasses.VolleyHandler;
-import com.facebook.AccessToken;
+
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -41,7 +41,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+
 
     Button btnLogin;
     TextView bohemea;
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getData(JSONObject object) {
 
-        final JSONObject mPicture;
+
         try {
 
 
@@ -109,15 +109,11 @@ public class MainActivity extends AppCompatActivity {
 
             loginUser(name,email,mImageUrl);
 
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
-
-
 
 
     private void sendIntent(){
@@ -144,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             if (!jsonObject.getBoolean("error")){
                                 JSONObject jsonObjectUser =  jsonObject.getJSONObject("user");
-                                Log.d(TAG, "onResponse: "+jsonObjectUser.toString());
 
                                 User user = new User(jsonObjectUser.getInt("id"),jsonObjectUser.getString("user_name"),jsonObjectUser.getString("user_email")
                                         ,jsonObjectUser.getString("user_photo"),jsonObjectUser.getInt("user_phone_number"));
@@ -162,14 +157,14 @@ public class MainActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "onErrorResponse: "+error.toString());
+                        Toast.makeText(MainActivity.this, getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                     }
                 }
         ){
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map userData = new HashMap<>();
+            protected Map<String, String> getParams() {
+                Map<String,String> userData = new HashMap<>();
                 userData.put("user_name",name);
                 userData.put("user_email",email);
                 userData.put("user_photo",profile_image);
@@ -190,10 +185,6 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        Log.d(TAG, "onResponse: "+response);
-
-
 
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
@@ -216,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                             } catch (JSONException e) {
-                                Log.d(TAG, "onResponse: " + e.getMessage());
+                                Toast.makeText(MainActivity.this,getString(R.string.internet_off),Toast.LENGTH_LONG).show();
                             }
 
                     }
@@ -241,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
         final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
         alert.setTitle("One more step ...");
         LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View alertLayout = li.inflate(R.layout.alert_phone, null);
+        @SuppressLint("InflateParams") View alertLayout = li.inflate(R.layout.alert_phone, null);
         final EditText edtPhone = alertLayout.findViewById(R.id.edtPhone);
         TextView loginBtn = alertLayout.findViewById(R.id.login);
 
@@ -261,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                     registerUser(name,email,profile_image,phone_number);
                     dialog.dismiss();
                 }else {
-                    layout.setError("Can't be empty");
+                    layout.setError(getString(R.string.phone_number_empty));
                 }
             }
         });

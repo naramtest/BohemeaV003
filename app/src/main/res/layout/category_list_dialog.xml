@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/colorPrimary"
-        android:text="Select Category"
+        android:text="@string/food_category_select_btn"
         android:gravity="center_horizontal"
         android:textColor="@color/white"
         android:padding="16dp"

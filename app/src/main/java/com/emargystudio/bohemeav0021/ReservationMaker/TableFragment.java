@@ -17,12 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.emargystudio.bohemeav0021.Common.isOrdered;
 import static com.emargystudio.bohemeav0021.Common.res_id;
@@ -57,7 +58,6 @@ import static com.emargystudio.bohemeav0021.Common.total;
 
 public class TableFragment extends Fragment {
 
-    private static final String TAG = "TableFragment";
 
     //widget
     TextView textView;
@@ -84,7 +84,7 @@ public class TableFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_table, container, false);
 
@@ -113,13 +113,16 @@ public class TableFragment extends Fragment {
             reservationQuery();
 
         }catch (NullPointerException e){
-            Toast.makeText(getContext(), "something went wrong", Toast.LENGTH_SHORT).show();
+            if (getContext()!=null){
+                Toast.makeText(getContext(), getContext().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
+            }
         }
 
         loadListFood();
-        Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NABILA.TTF");
-        textView.setTypeface(face);
-
+        if (getActivity()!=null){
+            Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NABILA.TTF");
+            textView.setTypeface(face);
+        }
 
     }
 
@@ -145,8 +148,6 @@ public class TableFragment extends Fragment {
 
                                 JSONArray jsonArrayReservation =  jsonObject.getJSONArray("reservations");
 
-                                Log.i("arrayReservation",jsonArrayReservation.toString());
-
                                 for(int i = 0 ; i<jsonArrayReservation.length(); i++){
                                     JSONObject jsonObjectSingleRes = jsonArrayReservation.getJSONObject(i);
                                     Log.i("jsonObjectSingleRes",jsonObjectSingleRes.toString());
@@ -155,26 +156,23 @@ public class TableFragment extends Fragment {
                                     double endHour   = jsonObjectSingleRes.getDouble("end_hour");
                                     if (reservation.getStartHour() >= startHour && reservation.getStartHour() <= endHour){
                                         tableArray.add(jsonObjectSingleRes.getInt("table_id"));
-                                        Log.d(TAG, "onResponse: "+jsonObjectSingleRes.getInt("table_id"));
                                     }
                                 }
                                 if (movie_name == null){
                                     initTabLayout();
                                 }
                             }else{
-                                Toast.makeText(getContext(), "Please check your internet connection and try again later .... ", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, "onResponse: " + jsonObject.getString("message"));
+                                Toast.makeText(getContext(), Objects.requireNonNull(getContext()).getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                             }
                         }catch (JSONException e){
-                            e.printStackTrace();
+                            Toast.makeText(getContext(), Objects.requireNonNull(getContext()).getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),"response error",Toast.LENGTH_LONG).show();
-                        Log.d(TAG, "onErrorResponse: "+ error.getMessage());
+                        Toast.makeText(getContext(), Objects.requireNonNull(getContext()).getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -195,7 +193,7 @@ public class TableFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                alertSend(user.getUserId(),reservation,tab.getText().toString(),"No movie");
+                alertSend(user.getUserId(),reservation, Objects.requireNonNull(tab.getText()).toString(),"No movie");
             }
 
             @Override
@@ -250,7 +248,6 @@ public class TableFragment extends Fragment {
 
                                 JSONObject jsonObjectUser =  jsonObject.getJSONObject("reservation");
                                 Common.res_id = jsonObjectUser.getInt("res_id");
-                                Log.d(TAG, "onResponse: "+Common.res_id);
 
                                 if (Common.isOrdered){
                                     sendOrder();
@@ -258,25 +255,25 @@ public class TableFragment extends Fragment {
                                 alertDone();
 
                             }else {
-                                Toast.makeText(getContext(), getContext().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), Objects.requireNonNull(getContext()).getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                             }
 
                         }catch (JSONException e){
-                            e.printStackTrace();
+                            Toast.makeText(getContext(), Objects.requireNonNull(getContext()).getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "onErrorResponse: "+error.getMessage());
+                        Toast.makeText(getContext(), Objects.requireNonNull(getContext()).getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                     }
                 }
         ){
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map ReservationData = new HashMap<>();
+            protected Map<String, String> getParams() {
+                Map<String,String> ReservationData = new HashMap<>();
                 ReservationData.put("user_id",String.valueOf(user_id));
                 ReservationData.put("table_id",table_id);
                 ReservationData.put("year",String.valueOf(reservation.getYear()));
@@ -296,7 +293,6 @@ public class TableFragment extends Fragment {
     private void sendOrder() {
         Gson gson=new Gson();
         final String newDataArray=gson.toJson(foodList);
-        Log.d(TAG, "sendOrder: "+foodList);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLS.test,
                 new Response.Listener<String>() {
                     @Override
@@ -320,7 +316,7 @@ public class TableFragment extends Fragment {
                 }
         ){
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 Map<String,String> param=new HashMap<>();
                 param.put("array",newDataArray);
                 param.put("total", String.valueOf(total));
@@ -332,12 +328,13 @@ public class TableFragment extends Fragment {
     }
 
     public void alertDone(){
+        if (getContext()!=null){
+
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View alertLayout = li.inflate(R.layout.alert_reser_done,null);
-        LinearLayout menu = alertLayout.findViewById(R.id.menu_container);
+        TextView menu = alertLayout.findViewById(R.id.menu_container);
         RelativeLayout menuTxt = alertLayout.findViewById(R.id.menu);
-        Log.d(TAG, "alertDone: "+isOrdered);
         if (isOrdered){
             menuTxt.setVisibility(View.GONE);
         }
@@ -347,7 +344,7 @@ public class TableFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), MenuActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(intent);
+                Objects.requireNonNull(getContext()).startActivity(intent);
             }
         });
         alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
@@ -355,24 +352,28 @@ public class TableFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getContext(), HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(intent);
+                Objects.requireNonNull(getContext()).startActivity(intent);
             }
         });
         AlertDialog dialog = alert.create();
         dialog.show();
+
+        }
     }
 
     public void alertSend(final int user_id, final Reservation reservation, final String table_id, final String movie_name){
+       if (getContext()!=null){
+
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setTitle("Table Number "+table_id);
-        alert.setMessage("Are you sure that you want to choose this table");
-        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        alert.setTitle(String.format(getString(R.string.table_frag_alert_send_table_number),table_id));
+        alert.setMessage(R.string.table_frag_alert_send_message);
+        alert.setPositiveButton(R.string.table_frag_alert_send_yesBtn, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 sendReservation(user_id,reservation,table_id,movie_name);
             }
         });
-        alert.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(R.string.table_frag_alert_send_cancel_btn, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -380,6 +381,8 @@ public class TableFragment extends Fragment {
         });
         AlertDialog dialog = alert.create();
         dialog.show();
+
+       }
     }
 
 

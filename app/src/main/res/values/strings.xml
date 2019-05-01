@@ -1,25 +1,131 @@
 <resources>
     <string name="app_name">Bohemea</string>
-    <!-- parse setup-->
-    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
-    <string name="back4app_app_id">greQpkjfhwkBlBEurz97GDHK36L714ig97682cBq</string>
-    <string name="back4app_client_key">vTmcNEoiDUcsoo05qH3lSIEqkawiSClqSwXEJ2zW</string>
     <!--Facebook Login setup-->
     <string name="facebook_app_id">327368101452898</string>
 
     <!--Menu Strings-->
 
-    <!--Spinner items-->
+    <!--date fragment-->
     <string name="starts_at">Starts at :</string>
     <string name="choose_a_date">Date</string>
+    <string name="reservation_for">Reservation for: Enter a number</string>
+    <string name="date_fregment_header">It\'s just gonna take a minute</string>
+
 
 
     <string name="reservation_bundle">reservation</string>
     <string name="internet_off">Something want wrong please check your internet connection and try again later</string>
-    <string name="my_cart">My Cart</string>
     <string name="delete">DELETE</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="waiting">Waiting</string>
     <string name="aprroved">Approved</string>
+
+
+    <!--cart_activity-->
+    <string name="cart_activity_total">Total</string>
+    <string name="cart_activity_empty_text">Looks like you haven\'t made your choice yet ....</string>
+    <string name="cart_a_backtomenu_btn">Back to menu</string>
+    <string name="cart_a_order_btn">Place Order</string>
+    <string name="cinema_category_btn">Categories</string>
+
+
+    <!--cinema and cinema_category activity-->
+    <string name="popular_cinema_a">Popular</string>
+    <string name="my_list_cinema_a">My list</string>
+    <string name="cinema_category_toolbar_title">Movies</string>
+
+    <!--food details and home strings-->
+    <string name="food_details_add_note_btn">ADD A Note</string>
+    <string name="home_make_a_reservation_btn">Make A reservation</string>
+
+    <!--movie_details-->
+    <string name="movie_details_release_date">Release date</string>
+    <string name="movie_details_length">Length</string>
+    <string name="movie_details_summary">Summary</string>
+    <string name="movie_details_screenshots">Screenshots</string>
+
+    <!--alert done-->
+    <string name="alert_done_all_done">All Done!</string>
+    <string name="alert_done_send_notification">We will send you a notification when your reservation approved</string>
+    <string name="alert_done_menu">Now go and check our menu</string>
+    <string name="alert_done_menu_btn">MENU</string>
+    <string name="alert_done_reservation_history">*go to your profile to check your reservation history</string>
+    <string name="alert_note_edit_text_hint">You Can Enter an Additional Note Here</string>
+
+    <!--alert phone-->
+    <string name="alert_phone_et_hint">Enter Your Phone Number ...</string>
+    <string name="alert_phone_required">*required</string>
+    <string name="alert_phone_done_btn">Done</string>
+
+    <!--food category and cinema genres button-->
+    <string name="food_category_select_btn">Select Category</string>
+    <string name="cinema_genres_choose">Choose</string>
+
+    <!--history_summary_middle_part-->
+    <string name="history_summary_no_orders">No Orders</string>
+    <string name="history_summary_submit_btn">Submit</string>
+    <string name="res_history_show_btn">SHOW</string>
+    <string name="f_table_header">Pick Your Favorite Table</string>
+
+    <!--settings-->
+    <string name="settings_phoneEdt_hint">Edit your phone number</string>
+    <string name="settings_logout">Log out</string>
+    <string name="setting_about">About Bohemea</string>
+    <string name="setting_save">Save</string>
+
+    <string name="profile_history">Reservation History</string>
+
+    <!--order_history-->
+    <string name="order_history_header">Order Summary</string>
+    <string name="order_history_name">Name</string>
+    <string name="order_history_total">Total</string>
+    <string name="order_history_cancelBtn">Cancel This Reservation</string>
+
+    <!--java strings-->
+    <string name="menu_search">search</string>
+    <string name="res_history_list_empty_warning">You haven\'t made any reservation yet ....</string>
+    <string name="phone_number_empty">Can\'t be empty</string>
+
+
+    <!--adapters strings-->
+    <string name="total_res_history_j">Total: %1$d  S.P</string>
+    <string name="food_menu_adapter_price_text">Price: %1$d  S.P</string>
+    <string name="cart_update_dialog">Make your order special</string>
+    <string name="cart_update_dialog_cancel">Cancel</string>
+    <string name="cart_update_dialog_update">Update</string>
+
+    <!--ReservationMaker files-->
+    <string name="table_frag_alert_send_table_number">Table Number: %1$s</string>
+    <string name="table_frag_alert_send_message">Are you sure that you want to choose this table</string>
+    <string name="table_frag_alert_send_yesBtn">Yes</string>
+    <string name="table_frag_alert_send_cancel_btn">Cancel</string>
+    <string name="table_emptyEdt_error_data">Pick a date before</string>
+    <string name="table_emptyEdt_error_hour">Choose an hour first</string>
+    <string name="table_emptyEdt_error_chair">Fill this field</string>
+
+
+    <!--cart java-->
+    <string name="cart_act_btn_make_res_first">Make a Reservation First</string>
+    <string name="cart_done_dailog_done">Close</string>
+    <string name="cart_snackbar_remove">removed from cart!</string>
+    <string name="cart_snackbar_undo">UNDO</string>
+
+
+    <!--orderHistoryFragment java-->
+    <string name="order_his_f_update_done">done</string>
+    <string name="order_his_f_totalTxt">%1$d  S.P</string>
+    <string name="order_his_cancel_dialog_message">Are you sure you want to cancel this reservation</string>
+    <string name="order_his_cancel_dialog_no">No</string>
+    <string name="order_his_cancel_dialog_yes">Yse</string>
+    <string name="order_his_cancel_dialog_done">Done</string>
+
+
+    <!--foodDetailActivity-->
+    <string name="foodDetailActivity_food_price">Price: %1$d  S.P</string>
+    <string name="foodDetailActivity_toast">Added To Cart</string>
+    <string name="foodDetailActivity_showDialog_addBtn">Add</string>
+
+
+    <string name="setting_logout_toast">Good bye .....</string>
+
 
 </resources>

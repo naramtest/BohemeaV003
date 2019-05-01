@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -34,7 +35,6 @@
                 app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
-                android:title="Food Name"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -85,7 +85,6 @@
                             android:id="@+id/food_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            tools:text="Price: 1,000 S.P"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             android:textStyle="bold"
@@ -125,7 +124,6 @@
                         android:id="@+id/food_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="Price: 1,000 S.P"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginTop="8dp"
@@ -140,23 +138,15 @@
                         android:layout_marginTop="8dp"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
-                        tools:text="Food Name"
                         android:textColor="#757575"
                         android:textSize="14sp" />
-
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="12dp"
-                        android:layout_marginTop="8dp"
-                        >
-
-
-
-
+                        android:layout_marginTop="8dp">
 
                         <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
                             android:layout_width="100dp"
@@ -169,16 +159,13 @@
                             app:textSize="12sp"
                             >
 
-
-
                         </com.cepheuen.elegantnumberbutton.view.ElegantNumberButton>
-
 
                         <TextView
                             android:id="@+id/add_note"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ADD A Note"
+                            android:text="@string/food_details_add_note_btn"
                             android:layout_gravity="center"
                             android:layout_marginStart="12dp"
                             android:textStyle="bold"
@@ -188,29 +175,12 @@
                             android:clickable="true"
                             android:focusable="true" />
 
-
                     </LinearLayout>
-
-
-
 
                 </LinearLayout>
 
-
-
-
-
-
-
         </LinearLayout>
 
-
-
-
-
     </android.support.v4.widget.NestedScrollView>
-
-
-
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,7 +1,7 @@
 package com.emargystudio.bohemeav0021.ViewHolder;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.emargystudio.bohemeav0021.InterFace.ItemClickListener;
+
 import com.emargystudio.bohemeav0021.R;
 
 public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -19,11 +19,7 @@ public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     public ImageView foodImage;
     public FrameLayout frameLayout;
 
-    private ItemClickListener itemClickListener;
 
-    public void setTxt_cart_name(TextView txt_cart_name) {
-        this.txt_cart_name = txt_cart_name;
-    }
 
     public CartViewHolder(@NonNull View itemView) {
         super(itemView);

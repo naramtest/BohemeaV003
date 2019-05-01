@@ -1,29 +1,20 @@
 package com.emargystudio.bohemeav0021.ReservationMaker;
 
-import android.content.Intent;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageView;
 
-import com.emargystudio.bohemeav0021.HomeActivity;
 import com.emargystudio.bohemeav0021.R;
 
 public class ReservationActivity extends AppCompatActivity {
 
-    private static final String TAG = "ReservationActivity";
 
-
-
-    ImageView next;
     Fragment datafragment;
     Fragment fragment;
     Fragment tableFragment;
 
-
-    //var
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

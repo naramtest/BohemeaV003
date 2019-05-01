@@ -42,7 +42,6 @@
                 android:id="@+id/res_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date: 2019/02/28"
                 style="@style/SummaryText" />
 
             <TextView
@@ -50,7 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Total:0 S.P"
                 style="@style/SummaryText"
                  />
         </LinearLayout>
@@ -61,7 +59,6 @@
                 android:id="@+id/status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Waiting"
                 android:gravity="end"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/layout1"
@@ -84,7 +81,7 @@
             android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SHOW"
+            android:text="@string/res_history_show_btn"
             style="@style/SummaryText"
             android:gravity="end" />
 

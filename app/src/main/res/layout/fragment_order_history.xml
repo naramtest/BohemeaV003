@@ -31,7 +31,7 @@
                 android:id="@+id/summaryTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Order Summary"
+                android:text="@string/order_history_header"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="22sp"/>
@@ -120,7 +120,7 @@
                 android:weightSum="2">
 
                 <TextView
-                    android:text="Name "
+                    android:text="@string/order_history_name"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                 android:weightSum="2">
 
                 <TextView
-                    android:text="Total "
+                    android:text="@string/order_history_total"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -173,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/colorAccent"
-                android:text="Cancel This Reservation"
+                android:text="@string/order_history_cancelBtn"
                 android:textColor="@color/white"
                 android:layout_marginTop="48dp"
                 android:layout_marginBottom="16dp"/>

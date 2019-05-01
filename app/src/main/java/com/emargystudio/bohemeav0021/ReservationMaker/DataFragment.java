@@ -2,8 +2,7 @@ package com.emargystudio.bohemeav0021.ReservationMaker;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,59 +13,36 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
+
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.emargystudio.bohemeav0021.Common;
-import com.emargystudio.bohemeav0021.Menu.MenuActivity;
-import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
 import com.emargystudio.bohemeav0021.helperClasses.CommonReservation;
 import com.emargystudio.bohemeav0021.HomeActivity;
 import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.R;
-import com.emargystudio.bohemeav0021.helperClasses.URLS;
-import com.emargystudio.bohemeav0021.helperClasses.VolleyHandler;
-import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.emargystudio.bohemeav0021.Common.isOrdered;
-import static com.emargystudio.bohemeav0021.Common.res_id;
-import static com.emargystudio.bohemeav0021.Common.total;
-import static com.emargystudio.bohemeav0021.helperClasses.CommonReservation.hideSoftKeyboard;
+import java.util.Objects;
 
 
 public class DataFragment extends Fragment {
 
-    private static final String TAG = "DataFragment";
+
 
     TextView txtData;
     EditText edtDate , edtHour , edtChairs;
@@ -113,14 +89,12 @@ public class DataFragment extends Fragment {
         tableFragment = new TableFragment();
 
         //change fonts
-        Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NABILA.TTF");
-        txtData.setTypeface(face);
+        if (getActivity()!=null){
+            Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NABILA.TTF");
+            txtData.setTypeface(face);
+        }
 
 
-        //initEditTexts();
-
-
-        //Cinema
 
         Bundle bundle = this.getArguments();
         if (bundle!=null){
@@ -226,7 +200,7 @@ public class DataFragment extends Fragment {
 
     public void datePicker(int currentYear, int currentMonth, int currentDay){
 
-        DatePickerDialog dialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog dialog = new DatePickerDialog(Objects.requireNonNull(getContext()), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
@@ -286,16 +260,17 @@ public class DataFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null){
-            Log.d(TAG, "onViewCreated: "+savedInstanceState.toString());
             Bundle bundle = savedInstanceState.getBundle("args");
             if (bundle != null) {
                 reservation = bundle.getParcelable(getString(R.string.reservation_bundle));
-                chosenYear = reservation.getYear();
-                chosenMonth = reservation.getMonth();
-                chosenDay = reservation.getDay();
-                chosenStartHour = reservation.getStartHour();
-                chosenEndHour = reservation.getEnd_hour();
-                chosenChair = reservation.getChairNumber();
+                if (reservation!=null) {
+                    chosenYear = reservation.getYear();
+                    chosenMonth = reservation.getMonth();
+                    chosenDay = reservation.getDay();
+                    chosenStartHour = reservation.getStartHour();
+                    chosenEndHour = reservation.getEnd_hour();
+                    chosenChair = reservation.getChairNumber();
+                }
             }
 
         }
@@ -304,16 +279,16 @@ public class DataFragment extends Fragment {
 
     public void nextFragment(){
         if (chosenYear == 0 || chosenMonth == 0 || chosenDay == 0) {
-            dataLayout.setError("Pick a date before");
+            dataLayout.setError(getString(R.string.table_emptyEdt_error_data));
 
 
         }else if (chosenStartHour == 0 && chosenEndHour == 0 ) {
 
-            hourLayout.setError("Choose an hour first");
+            hourLayout.setError(getString(R.string.table_emptyEdt_error_hour));
 
         }else if (chosenChair == 0){
 
-            chairLayout.setError("Fill this field");
+            chairLayout.setError(getString(R.string.table_emptyEdt_error_chair));
 
         }else {
 
@@ -321,10 +296,12 @@ public class DataFragment extends Fragment {
             Bundle args = new Bundle();
             args.putParcelable(getString(R.string.reservation_bundle), reservation);
             tableFragment.setArguments(args);
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.your_placeholder, tableFragment,"table");
-            ft.addToBackStack("Table");
-            ft.commit();
+            if (getActivity()!=null) {
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.your_placeholder, tableFragment, "table");
+                ft.addToBackStack("Table");
+                ft.commit();
+            }
         }
     }
 

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.emargystudio.bohemeav0021.InterFace.ItemClickListener;
-import com.emargystudio.bohemeav0021.Model.FoodCategory;
+
 import com.emargystudio.bohemeav0021.Model.FoodMenu;
 import com.emargystudio.bohemeav0021.R;
 import com.squareup.picasso.Picasso;
@@ -49,7 +49,8 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.FoodMe
 
         Picasso.get().load(foodMenus.get(i).getImage_url()).into(holder.foodImage);
         holder.foodName.setText(foodMenus.get(i).getName());
-        holder.price.setText("Price: "+foodMenus.get(i).getPrice()+" S.P");
+        String priceString = String.format(context.getString(R.string.food_menu_adapter_price_text),foodMenus.get(i).getPrice());
+        holder.price.setText(priceString);
 
     }
 
@@ -64,7 +65,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.FoodMe
         TextView foodName,price;
 
 
-        public FoodMenuViewHolder(@NonNull View itemView) {
+        FoodMenuViewHolder(@NonNull View itemView) {
             super(itemView);
             foodImage = itemView.findViewById(R.id.food_image);
             foodName  = itemView.findViewById(R.id.food_name);

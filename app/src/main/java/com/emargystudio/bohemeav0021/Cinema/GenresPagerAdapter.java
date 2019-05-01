@@ -1,6 +1,7 @@
 package com.emargystudio.bohemeav0021.Cinema;
 
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
@@ -27,13 +28,13 @@ public class GenresPagerAdapter extends PagerAdapter implements CardAdapter {
     private List<Movie> mData;
     private float mBaseElevation;
 
-    public GenresPagerAdapter(MovieItemClickListener movieItemClickListener) {
+    GenresPagerAdapter(MovieItemClickListener movieItemClickListener) {
         mData = new ArrayList<>();
         mViews = new ArrayList<>();
         this.movieItemClickListener = movieItemClickListener;
     }
 
-    public void addCardItem(Movie item) {
+    void addCardItem(Movie item) {
         mViews.add(null);
         mData.add(item);
     }
@@ -47,7 +48,7 @@ public class GenresPagerAdapter extends PagerAdapter implements CardAdapter {
         return mViews.get(position);
     }
 
-    public Movie getDate(int position){
+    Movie getDate(int position){
         return mData.get(position);
     }
 
@@ -59,12 +60,13 @@ public class GenresPagerAdapter extends PagerAdapter implements CardAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         View view = LayoutInflater.from(container.getContext())
                 .inflate(R.layout.genres_item, container, false);
         container.addView(view);
@@ -91,7 +93,7 @@ public class GenresPagerAdapter extends PagerAdapter implements CardAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
         mViews.set(position, null);
     }

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -27,7 +27,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.emargystudio.bohemeav0021.Model.Movie;
-import com.emargystudio.bohemeav0021.Model.Reservation;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
 import com.emargystudio.bohemeav0021.OrderDatabase.MovieViewModel;
@@ -49,7 +48,6 @@ import java.util.List;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
-    private static final String TAG = "MovieDetailsFragment";
 
     Movie movie;
     ImageView imageView , like, like_red , back_button;
@@ -112,17 +110,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     if (movie!=null){
                         sqlMovie = movie;
                         mLikedByCurrentUser = true;
-
                     }else {
                         mLikedByCurrentUser = false;
-
                     }
                     likeTrigger();
                 }
             });
         }
-
-
     }
 
     private void initViews() {
@@ -145,8 +139,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private void setupViewsInfo() {
         try {
 
-
-            Log.d(TAG, "setupViewsInfo: "+movie.getTmdb_id());
             ViewCompat.setTransitionName(imageView,movie.getTitle());
             Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.getBackdrop_path()).fit().centerCrop()
                     .into(imageView);
@@ -160,10 +152,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
             runtime.setText(String.valueOf(movie.getRuntime()));
             setupRecyclerView(movie);
 
-
         }catch (NullPointerException e){
 
-            Toast.makeText(MovieDetailsActivity.this, "Something want wrong", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MovieDetailsActivity.this, getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -204,14 +195,14 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Toast.makeText(MovieDetailsActivity.this, getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "onErrorResponse: " + error.toString());
+                        Toast.makeText(MovieDetailsActivity.this, getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                     }
                 }
         );//end of string Request
@@ -245,13 +236,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
 
-            Log.d(TAG, "onDoubleTap: double tap detected.");
             if (mLikedByCurrentUser){
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
                         mDb.movieDao().deleteFood(sqlMovie);
-                        Log.d(TAG, "run: ");
 
                     }
                 });
@@ -279,7 +268,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             like_red.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    Log.d(TAG, "onTouch: red heart touch detected.");
+
                     return mGestureDetector.onTouchEvent(event);
                 }
             });
@@ -291,7 +280,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
             like.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    Log.d(TAG, "onTouch: red heart touch detected.");
                     return mGestureDetector.onTouchEvent(event);
                 }
             });

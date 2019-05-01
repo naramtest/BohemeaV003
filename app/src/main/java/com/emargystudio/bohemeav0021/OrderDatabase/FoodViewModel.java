@@ -5,10 +5,6 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
 import com.emargystudio.bohemeav0021.Model.FoodMenu;
-import com.emargystudio.bohemeav0021.Model.Movie;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FoodViewModel extends AndroidViewModel {

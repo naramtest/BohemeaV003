@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -38,7 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileFragment extends Fragment {
-    private static final String TAG = "ProfileFragment";
+
 
     private SharedPreferenceManger sharedPreferenceManger;
     User user;
@@ -55,7 +53,7 @@ public class ProfileFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
@@ -82,16 +80,19 @@ public class ProfileFragment extends Fragment {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.your_placeholder, new SettingsFragment(),"Settings");
-                ft.addToBackStack("Settings");
-                ft.commit();
+                if (getActivity()!=null) {
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.your_placeholder, new SettingsFragment(), "Settings");
+                    ft.addToBackStack("Settings");
+                    ft.commit();
+                }
             }
         });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (getActivity()!=null)
                 getActivity().onBackPressed();
             }
         });
@@ -112,7 +113,6 @@ public class ProfileFragment extends Fragment {
 
     public void setupView(){
         user = sharedPreferenceManger.getUserData();
-        Log.d(TAG, "setupView: "+user.getUserPhoto());
         Picasso.get().load(user.getUserPhoto()).into(profile_photo);
         userName.setText(user.getUserName());
         reservationQuery();
@@ -136,25 +136,22 @@ public class ProfileFragment extends Fragment {
 
                                 for(int i = 0 ; i<jsonArrayReservation.length(); i++){
                                     JSONObject jsonObjectSingleRes = jsonArrayReservation.getJSONObject(i);
-                                    Log.d(TAG, "onResponse: "+jsonObjectSingleRes.toString());
-                                    if (jsonObjectSingleRes.getInt("status") ==2){
-
-
-                                    }else {
-                                       reservation_co+=1;
-
+                                    if (jsonObjectSingleRes.getInt("status") !=2) {
+                                        reservation_co += 1;
                                     }
                                 }
                                 reservation_counter.setText(String.valueOf(reservation_co));
 
                             }else{
 
-                                Toast.makeText(getContext(), "Please check your internet connection and try again later .... ", Toast.LENGTH_SHORT).show();
+                                if (getActivity()!=null)
+                                    Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
 
                             }
                         }catch (JSONException e){
 
-                            e.printStackTrace();
+                            if (getActivity()!=null)
+                                Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
@@ -162,8 +159,9 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText(getContext(),"response error", Toast.LENGTH_LONG).show();
-                        Log.d(TAG, "onErrorResponse: "+ error.getMessage());
+                        if (getActivity()!=null)
+                            Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
+
                     }
                 }
 

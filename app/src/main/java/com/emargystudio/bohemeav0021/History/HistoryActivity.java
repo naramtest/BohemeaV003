@@ -9,7 +9,7 @@ import com.emargystudio.bohemeav0021.R;
 
 
 public class HistoryActivity extends AppCompatActivity {
-    private static final String TAG = "HistoryActivity";
+
 
     Fragment ReservationFragment;
     Fragment OrderFragment;

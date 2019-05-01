@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +37,7 @@ import java.util.Collections;
 
 public class ResHistoryListFragment extends Fragment {
 
-    private static final String TAG = "ResHistoryListFragment";
+
 
     User user;
     ArrayList<Reservation> reservations = new ArrayList<>();
@@ -54,7 +54,7 @@ public class ResHistoryListFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_res_history_list, container, false);
@@ -95,23 +95,19 @@ public class ResHistoryListFragment extends Fragment {
                                 }
                                 for(int i = 0 ; i<jsonArrayReservation.length(); i++){
                                     JSONObject jsonObjectSingleRes = jsonArrayReservation.getJSONObject(i);
-                                    Log.d(TAG, "onResponse: "+jsonObjectSingleRes.toString());
-                                    if (jsonObjectSingleRes.getInt("status") ==2){
-
-                                    }else {
-                                    reservations.add(new Reservation(jsonObjectSingleRes.getInt("res_id"),
-                                            jsonObjectSingleRes.getInt("user_id"),
-                                            jsonObjectSingleRes.getInt("table_id"),
-                                            jsonObjectSingleRes.getInt("year"),
-                                            jsonObjectSingleRes.getInt("month"),
-                                            jsonObjectSingleRes.getInt("day"),
-                                            jsonObjectSingleRes.getDouble("hours"),
-                                            jsonObjectSingleRes.getDouble("end_hour"),
-                                            jsonObjectSingleRes.getInt("chairNumber"),
-                                            jsonObjectSingleRes.getInt("status"),
-                                            jsonObjectSingleRes.getInt("total"),
-                                            jsonObjectSingleRes.getString("movie_name")));
-
+                                    if (jsonObjectSingleRes.getInt("status") !=2) {
+                                        reservations.add(new Reservation(jsonObjectSingleRes.getInt("res_id"),
+                                                jsonObjectSingleRes.getInt("user_id"),
+                                                jsonObjectSingleRes.getInt("table_id"),
+                                                jsonObjectSingleRes.getInt("year"),
+                                                jsonObjectSingleRes.getInt("month"),
+                                                jsonObjectSingleRes.getInt("day"),
+                                                jsonObjectSingleRes.getDouble("hours"),
+                                                jsonObjectSingleRes.getDouble("end_hour"),
+                                                jsonObjectSingleRes.getInt("chairNumber"),
+                                                jsonObjectSingleRes.getInt("status"),
+                                                jsonObjectSingleRes.getInt("total"),
+                                                jsonObjectSingleRes.getString("movie_name")));
                                     }
                                 }
                                 Collections.reverse(reservations);
@@ -128,7 +124,8 @@ public class ResHistoryListFragment extends Fragment {
 
                             }else{
                                 progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getContext(), "Please check your internet connection and try again later .... ", Toast.LENGTH_SHORT).show();
+                                if (getActivity()!=null)
+                                    Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
 
                             }
                         }catch (JSONException e){
@@ -141,8 +138,9 @@ public class ResHistoryListFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getContext(),"response error", Toast.LENGTH_LONG).show();
-                        Log.d(TAG, "onErrorResponse: "+ error.getMessage());
+                        if (getActivity()!=null)
+                            Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
+
                     }
                 }
 

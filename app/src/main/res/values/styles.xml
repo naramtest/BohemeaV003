@@ -9,19 +9,6 @@
     </style>
 
 
-
-    <style name="CollapsedAppBar" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textStyle">normal</item>
-    </style>
-
-    <style name="ExpendedAppBar" parent="@android:style/TextAppearance.Material.Title">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">normal</item>
-    </style>
-
-
     <style name="SummaryText" >
         <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="android:textStyle">bold</item>
@@ -46,6 +33,24 @@
     <style name="text_grey">
         <item name="android:fontFamily">sans-serif-condensed-medium</item>
         <item name="android:textSize">@dimen/normal_title</item>
+    </style>
+
+
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
+    <style name="date" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">#536DFE</item>
+        <item name="boxStrokeWidth">2dp</item>
+    </style>
+
+
+    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
+    <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 

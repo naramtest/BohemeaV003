@@ -9,25 +9,16 @@
     android:paddingBottom="4dp"
     android:background="@color/white">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_checked"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="All Done!"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-    </LinearLayout>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/alert_done_all_done"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:drawablePadding="8dp"
+        android:textSize="18sp"
+        android:drawableStart="@drawable/ic_checked"
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -35,7 +26,7 @@
         android:layout_marginTop="8dp"
         android:textSize="14sp"
         android:textColor="@color/black"
-        android:text="We will send you a notification when your reservation approved"/>
+        android:text="@string/alert_done_send_notification"/>
 
     <RelativeLayout
         android:id="@+id/menu"
@@ -47,43 +38,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="Now go and check our menu"
+            android:text="@string/alert_done_menu"
             android:layout_centerVertical="true"/>
-        <LinearLayout
-            android:id="@+id/menu_container"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:clickable="true"
-            android:focusable="true">
 
             <TextView
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/menu_container"
+                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MENU"
+                android:text="@string/alert_done_menu_btn"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:textColor="@color/colorAccent"
+                android:drawableEnd="@drawable/ic_navigate_next_black_24dp"
                 />
-
-            <ImageView
-                android:id="@+id/next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_navigate_next_black_24dp"/>
-
-        </LinearLayout>
-
-
     </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="*Visit your profile to check your reservation history"/>
-
-
-
+        android:text="@string/alert_done_reservation_history"/>
 
 </LinearLayout>

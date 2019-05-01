@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.emargystudio.bohemeav0021.HomeActivity;
 import com.emargystudio.bohemeav0021.MainActivity;
 import com.emargystudio.bohemeav0021.Model.User;
 import com.emargystudio.bohemeav0021.R;
@@ -34,7 +32,7 @@ import org.json.JSONObject;
 
 public class SettingsFragment extends Fragment {
 
-    private static final String TAG = "SettingsFragment";
+
 
     EditText phone_number;
     Button save;
@@ -52,7 +50,7 @@ public class SettingsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_settings, container, false);
@@ -75,7 +73,6 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 updatePhone(Integer.parseInt(phone_number.getText().toString()));
                 sharedPreferenceManger.updatPhoneNumber(Integer.parseInt(phone_number.getText().toString()));
-                Log.d(TAG, "onClick: "+sharedPreferenceManger.getUserData().getUserPhoneNumber());
             }
         });
 
@@ -84,7 +81,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 sharedPreferenceManger.logUserOut();
                 LoginManager.getInstance().logOut();
-                Toast.makeText(getContext(), "Good bye .....", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.setting_logout_toast), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -103,22 +100,25 @@ public class SettingsFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(response);
 
                             if(!jsonObject.getBoolean("error")){
-                                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-                                phone_number.setText("Done!");
+                                if (getActivity()!=null)
+                                phone_number.setText(getActivity().getString(R.string.order_his_cancel_dialog_done));
 
                             }else{
-                                Toast.makeText(getContext(), "Please check your internet connection and try again later .... ", Toast.LENGTH_SHORT).show();
+                                if (getActivity()!=null)
+                                    Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
 
                             }
                         }catch (JSONException e){
-                            e.printStackTrace();
+                            if (getActivity()!=null)
+                                Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),"response error", Toast.LENGTH_LONG).show();
+                        if (getActivity()!=null)
+                            Toast.makeText(getContext(), getActivity().getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                     }
                 }
         );

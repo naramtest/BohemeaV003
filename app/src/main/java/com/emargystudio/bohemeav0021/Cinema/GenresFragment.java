@@ -5,15 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.TransitionInflater;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -32,7 +33,7 @@ import org.json.JSONObject;
 
 public class GenresFragment extends Fragment implements MovieItemClickListener {
 
-    private static final String TAG = "GenresFragment";
+
 
     ViewPager mViewPager;
     GenresPagerAdapter genresPagerAdapter;
@@ -85,8 +86,6 @@ public class GenresFragment extends Fragment implements MovieItemClickListener {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
-
-
             }
 
             @Override
@@ -102,10 +101,6 @@ public class GenresFragment extends Fragment implements MovieItemClickListener {
 
 
     }
-
-
-
-
 
     private void movieQueryByGenres(String genres){
         String url = "http://naramalkoht.ml/bohemea/genres_query.php?genre="+genres;
@@ -134,21 +129,19 @@ public class GenresFragment extends Fragment implements MovieItemClickListener {
                                 if (i==0){
                                     setupMovieDetails(movie);
                                 }
-
-
                             }
                             genresPagerAdapter.notifyDataSetChanged();
 
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Toast.makeText(getContext(), getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "onErrorResponse: " + error.toString());
+                        Toast.makeText(getContext(), getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                     }
                 }
         );//end of string Request
@@ -156,13 +149,10 @@ public class GenresFragment extends Fragment implements MovieItemClickListener {
         VolleyHandler.getInstance(getContext()).addRequetToQueue(stringRequest);
     }
 
-
-
     private void setupMovieDetails(Movie movie) {
         movie_title.setText(movie.getTitle());
 
     }
-
 
     private String getMovieFromBundle(){
         Bundle bundle = this.getArguments();
@@ -172,7 +162,6 @@ public class GenresFragment extends Fragment implements MovieItemClickListener {
             return null;
         }
     }
-
     private void searchQuery(String searchWord) {
         String url = "http://naramalkoht.ml/bohemea/movie_searh.php?movie_word="+searchWord;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -204,18 +193,17 @@ public class GenresFragment extends Fragment implements MovieItemClickListener {
                             genresPagerAdapter.notifyDataSetChanged();
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Toast.makeText(getContext(), getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "onErrorResponse: " + error.toString());
+                        Toast.makeText(getContext(), getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                     }
                 }
         );//end of string Request
-
         VolleyHandler.getInstance(getContext()).addRequetToQueue(stringRequest);
     }
 

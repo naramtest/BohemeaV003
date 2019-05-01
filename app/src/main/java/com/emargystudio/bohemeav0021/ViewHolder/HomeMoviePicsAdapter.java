@@ -49,11 +49,11 @@ public class HomeMoviePicsAdapter extends RecyclerView.Adapter<HomeMoviePicsAdap
         return imagesUrl.size();
     }
 
-    public class NewMovieViewHolder extends RecyclerView.ViewHolder {
-        public ImageView moviePhoto;
-        public CardView cardView;
+    class NewMovieViewHolder extends RecyclerView.ViewHolder {
+        ImageView moviePhoto;
+        CardView cardView;
 
-        public NewMovieViewHolder(View view) {
+        NewMovieViewHolder(View view) {
             super(view);
             moviePhoto =  view.findViewById(R.id.movie_home_pics);
             cardView = view.findViewById(R.id.cardView);

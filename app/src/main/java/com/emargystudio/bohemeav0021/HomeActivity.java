@@ -3,7 +3,7 @@ package com.emargystudio.bohemeav0021;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -18,7 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.emargystudio.bohemeav0021.Model.HomeImage;
-import com.emargystudio.bohemeav0021.Model.Table;
+
 import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
 import com.emargystudio.bohemeav0021.ReservationMaker.ReservationActivity;
@@ -42,7 +42,7 @@ import java.util.ArrayList;
 
 
 public class HomeActivity extends AppCompatActivity {
-    private static final String TAG = "HomeActivity";
+
 
     //views
     Button btnMakeReservation;
@@ -197,8 +197,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void setupBottomNavigationView(){
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation);
+        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext,this,bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();

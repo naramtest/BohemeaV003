@@ -4,16 +4,12 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.TransitionInflater;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -35,6 +32,7 @@ import com.emargystudio.bohemeav0021.helperClasses.BottomNavigationViewHelper;
 import com.emargystudio.bohemeav0021.helperClasses.CardPagerAdapter;
 import com.emargystudio.bohemeav0021.helperClasses.MovieItemClickListener;
 import com.emargystudio.bohemeav0021.helperClasses.RecyclerTouchListener;
+import com.emargystudio.bohemeav0021.helperClasses.URLS;
 import com.emargystudio.bohemeav0021.helperClasses.VolleyHandler;
 import com.emargystudio.bohemeav0021.helperClasses.ZoomOutPageTransformer;
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
@@ -49,7 +47,7 @@ import java.util.List;
 
 public class CinemaActivity extends AppCompatActivity implements MovieItemClickListener {
 
-    private static final String TAG = "HomeFragment";
+
 
     private List<Movie> popularMovies = new ArrayList<>();
     private List<Movie> myListImagesUrl = new ArrayList<>();
@@ -154,9 +152,9 @@ public class CinemaActivity extends AppCompatActivity implements MovieItemClickL
     private void loadPopularImages(){
 
         popularMovies.clear();
-        String popular_movie_query = "http://naramalkoht.ml/bohemea/popular_movie_query.php";
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, popular_movie_query,
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URLS.popular_movie_query,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -183,14 +181,14 @@ public class CinemaActivity extends AppCompatActivity implements MovieItemClickL
                             mViewPager.setCurrentItem(1);
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Toast.makeText(mContext, mContext.getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "onErrorResponse: " + error.toString());
+                        Toast.makeText(mContext, mContext.getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                     }
                 }
         );//end of string Request
@@ -220,8 +218,8 @@ public class CinemaActivity extends AppCompatActivity implements MovieItemClickL
     }
     private void newMovieInit(){
 
-        String new_movies_query = "http://naramalkoht.ml/bohemea/new_movies_query.php";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, new_movies_query,
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URLS.new_movies_query,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -248,14 +246,14 @@ public class CinemaActivity extends AppCompatActivity implements MovieItemClickL
                             mViewPager.setCurrentItem(1);
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Toast.makeText(mContext, mContext.getString(R.string.internet_off), Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "onErrorResponse: " + error.toString());
+
                     }
                 }
         );//end of string Request
@@ -278,8 +276,7 @@ public class CinemaActivity extends AppCompatActivity implements MovieItemClickL
 
 
     private void setupBottomNavigationView(){
-        Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
-        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation);
+        BottomNavigationViewEx bottomNavigationViewEx =findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext,this,bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();

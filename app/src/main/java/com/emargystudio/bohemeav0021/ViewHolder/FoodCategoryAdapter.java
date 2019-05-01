@@ -63,7 +63,7 @@ public class FoodCategoryAdapter  extends RecyclerView.Adapter<FoodCategoryAdapt
         ImageView doneIcon;
         TextView category_text;
 
-        public FoodCategoryViewHolder(@NonNull View itemView) {
+        FoodCategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             doneIcon = itemView.findViewById(R.id.done);
             category_text  = itemView.findViewById(R.id.categoryItem);

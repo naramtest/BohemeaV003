@@ -2,38 +2,30 @@ package com.emargystudio.bohemeav0021.ViewHolder;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
-import com.emargystudio.bohemeav0021.InterFace.ItemClickListener;
 import com.emargystudio.bohemeav0021.Model.FoodOrder;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppDatabase;
 import com.emargystudio.bohemeav0021.OrderDatabase.AppExecutors;
 import com.emargystudio.bohemeav0021.R;
 import com.squareup.picasso.Picasso;
 
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
+
 
 public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder> {
 
-    private List<FoodOrder> listData;
-    private Context context;
-    AppDatabase mdb;
+     List<FoodOrder> listData;
+     Context context;
+     AppDatabase mdb;
 
     public CartAdapter(Context context) {
         this.context = context;
@@ -80,9 +72,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder> {
         return listData.size();
     }
 
-    public List<FoodOrder> getTasks() {
-        return listData;
-    }
 
     public void setTasks(List<FoodOrder> taskEntries) {
         listData = taskEntries;
@@ -91,9 +80,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder> {
 
     public void removeItem(int position) {
         listData.remove(position);
-        // notify the item removed by position
-        // to perform recycler view delete animations
-        // NOTE: don't call notifyDataSetChanged()
         notifyItemRemoved(position);
     }
 
@@ -104,9 +90,9 @@ public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder> {
     }
 
 
-    public void showDialog(final FoodOrder foodOrder){
+    private void showDialog(final FoodOrder foodOrder){
         final AlertDialog.Builder alert = new AlertDialog.Builder(context);
-        alert.setTitle("Make your order special");
+        alert.setTitle(R.string.cart_update_dialog);
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View alertLayout = li.inflate(R.layout.alert_update,null);
         final EditText add_note_Edt = alertLayout.findViewById(R.id.addNoteEdt);
@@ -116,21 +102,21 @@ public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder> {
             add_note_Edt.setText(foodOrder.getNote());
         }
         if (foodOrder.getPrice() != 0) {
-            txt_price.setText("Price: "+String.valueOf(foodOrder.getPrice())+" S.P");
+            txt_price.setText(String.format(context.getString(R.string.food_menu_adapter_price_text),foodOrder.getPrice()));
         }
         if (foodOrder.getQuantity() !=0 ){
             numberButton.setNumber(String.valueOf(foodOrder.getQuantity()));
         }
 
         alert.setView(alertLayout);
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(R.string.cart_update_dialog_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
 
-        alert.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(R.string.cart_update_dialog_update, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

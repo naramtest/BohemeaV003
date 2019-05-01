@@ -24,7 +24,8 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:src="@drawable/cartempty"
-           android:layout_centerInParent="true"/>
+           android:layout_centerInParent="true"
+           tools:ignore="ContentDescription" />
 
        <TextView
            android:id="@+id/text_cart"
@@ -34,7 +35,7 @@
            android:layout_width="200dp"
            android:layout_height="wrap_content"
            android:gravity="center"
-           android:text="Looks like you haven't made your choice yet ...." />
+           android:text="@string/cart_activity_empty_text" />
 
        <android.support.design.button.MaterialButton
            android:id="@+id/back_to_menu_btn"
@@ -44,7 +45,7 @@
            android:layout_below="@id/text_cart"
            android:layout_centerInParent="true"
            style="@style/Widget.AppCompat.Button.Colored"
-           android:text="Back to menu"
+           android:text="@string/cart_a_backtomenu_btn"
 
            />
 
@@ -86,14 +87,14 @@
 
 
                     <TextView
-
+                        android:layout_alignParentStart="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="8dp"
                         style="@style/SummaryText"
-                        android:text="Total " />
+                        android:text="@string/cart_activity_total" />
 
                 <TextView
                     android:id="@+id/total"
@@ -101,7 +102,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     style="@style/SummaryText"
-                    tools:text="$10,000 "
                     android:layout_alignParentEnd="true"/>
 
 
@@ -116,7 +116,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="Place Order"
+                    android:text="@string/cart_a_order_btn"
                     style="@style/Widget.AppCompat.Button.Colored"
                      />
 

@@ -16,5 +16,8 @@ public class URLS {
     public static final String edit_order = "http://naramalkoht.ml/bohemea/edit_order.php";
     public static final String home_images = "http://naramalkoht.ml/bohemea/home_images.php";
     public static final String update_phone = "http://naramalkoht.ml/bohemea/update_phone.php?id=";
+    public static final String popular_movie_query = "http://naramalkoht.ml/bohemea/popular_movie_query.php";
+    public static final String new_movies_query = "http://naramalkoht.ml/bohemea/new_movies_query.php";
+    public static final String movies_suggestion = "http://naramalkoht.ml/bohemea/movies_suggestion.php";
 
 }

@@ -12,7 +12,6 @@ import java.util.List;
 public class MovieViewModel extends AndroidViewModel {
 
 
-
     private LiveData<List<Movie>> movies;
     private LiveData<Movie> movie;
     AppDatabase database;
